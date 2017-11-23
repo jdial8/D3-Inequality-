@@ -1,21 +1,27 @@
+##### Data Source: https://www.census.gov/topics/income-poverty/wealth/data/tables.All.html #####
+
 library(tidyverse)
 library(readr)
 library(haven)
 library(dplyr)
 library(tidyr)
 library(stringr)
+library(jsonlite)
+library(ggplot2)
+
 
 
 setwd("/Users/jasmindial/Desktop/D3-Inequality-/")
 
 wealth <- read_csv("wealth-tables-2013.csv", skip = 5)[1:7,1:2] 
 colnames(wealth)[1:2] <- c("Race_Ethnicity", "2013")
-#maybe just give column a list
+
+#maybe just give column a list - always in same order? 
 wealth$Race_Ethnicity[2] <- "white, not hispanic"
 wealth$Race_Ethnicity[6] <- "hispanic origin"
 wealth <- mutate(wealth, Race_Ethnicity = tolower(Race_Ethnicity))
 
-#wealth2 <- read_csv("Wealth_Tables_2002.csv", skip = 3)[1:6,1:2] 
+#test <- read_csv("Wealth_Tables_2002.csv", skip = 3)[1:6,1:2] 
 
 
 for (csv in c("Wealth_Tables_2011.csv", "Wealth_Tables_2010.csv", "wealth-tables-2009.csv",
@@ -46,3 +52,27 @@ for (csv in c("Wealth_Tables_2011.csv", "Wealth_Tables_2010.csv", "wealth-tables
   wealth <- full_join(wealth, wealth2)
 }
   
+
+
+#transpose data to prep for line graph
+cols <- wealth$Race_Ethnicity
+test <- as.data.frame(t(wealth[,-1]))
+colnames(test) <- cols
+
+
+
+#convert wide to long w/ race first
+long_wealth <- gather(wealth, year, amount, `2013`:`2002`, factor_key=TRUE) %>% 
+                #mutate(year = as.integer(year), amount = as.integer(amount))
+
+long_wealth <- gather(wealth, value = race_ethnicity, amount, `2013`:`2002`, factor_key=TRUE)
+
+
+#ggplot(data=long_wealth, aes(x = year, y = amount, color = Race_Ethnicity, group = Race_Ethnicity)) +
+  #geom_point(size=0.5) +
+  #geom_line()
+
+
+#write to json
+json <- toJSON(wealth, pretty=TRUE)
+write(json, file="wealth.json")
