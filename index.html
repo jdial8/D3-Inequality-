@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <script type="text/javascript" src="./d3/d3.min.js"></script>
+
+  
+  <title>Wealth Gaps and Distribution</title>
+  <style>
+
+    svg {
+          background-color: #C8C8CC;
+        }
+
+    .line {
+      fill: none;
+      stroke: #409379;
+      stroke-widht: 2px;
+    }
+
+    .bar {
+        stroke: #000000;
+        stroke-width: 1;
+        fill: #FF9638;
+        opacity: .8;
+      }
+
+
+  </style>
+
+</head>
+<body>
+
+    <h4> Click to select groups. </h4>
+
+    <p> </p>
+    <button type = 'button' id = 'Race'> All </button>
+    <button type = 'button' id = 'Race'> Asian </button>
+    <button type = 'button' id = 'Race'> Black </button>
+    <button type = 'button' id = 'Race'> Hispanic </button>
+    <button type = 'button' id = 'Race'> White </button>
+    <p class = 'result'> </p> <!--using class instead of id just to show something different-->
+    <div class = 'axes'> </div>
+
+
+<div class = "container"
+	<div id = "linegraph"></div>
+</div>
+
+
+<script>
+
+  var parseTime = d3.timeParse("%Y");
+
+  d3.json("Networth.json", function(error, data){
+    dataset= data;
+
+    dataset.forEach(function(d) {
+      d.white_not_h = d.white_not_h
+      d.black = +d.black
+      d.asian = +d.asian
+      d.hispanic = +d.hispanic
+      d.year = parseTime(d.year);
+      console.log(d)
+    });
+
+  	if (error) {
+  		console.log(error);
+  	}
+  	else {
+  	makelineg();
+    }
+  	});
+
+  function makelineg(){
+  		console.log(dataset[0].year);
+  	
+
+  var margin = {top: 200, right: 100, bottom: 25, left: 100};
+  var width = 800 - margin.left - margin.right;
+  var height = 800 - margin.top - margin.bottom;
+
+
+  //var xScale = d3.scaleTime()
+     //.domain([d3.extent(dataset, function(d) {return d.year})]) 
+     //.rangeRound([0, width])
+
+  //var yScale = d3.scaleLinear()
+     //.domain([0, d3.max(dataset, function(d) {
+        //return Math.max(d.white_not_h, d.black, d.asian, d.hispanic); })]) 
+     //.range([height, 0]); //lower values appear lower on the screen
+
+  var x = d3.scaleTime().range([0, width]);
+  var y = d3.scaleLinear().range([height, 0])
+
+  // 1st line
+  var valueline = d3.line()
+    .x(function(d) { return x(d.year); })
+    .y(function(d) { return y(d.white_not_h); });
+
+
+  // create the svg
+  var svg = d3.select("#linegraph") //select the class with id barchart
+    .append('svg')
+    .attr("width", width + margin.right + margin.left)
+    .attr("height", height + margin.top + margin.bottom);
+
+  var g = svg.append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
+
+
+  x.domain(d3.extent(dataset, function(d) {return d.year}))
+  y.domain([0, d3.max(dataset, function (d) {
+    return Math.max(d.white_not_h, d.black, d.asian, d.hispanic);}
+    )]) 
+
+
+  g.append("path")
+    .data([dataset])
+    .attr("class", "line")
+    .attr("d", valueline)
+  
+
+
+  // x axis
+  svg.append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + height + ')')
+    .call(d3.axisBottom(x)) 
+    .selectAll("text")
+    .attr("transform", "rotate(-30)")
+    .attr("x", +10)
+    .attr("y", -15);
+
+
+
+  
+
+  
+
+
+  };
+
+</script>
+
+</body>
+</html>
