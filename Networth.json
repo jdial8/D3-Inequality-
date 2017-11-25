@@ -1,0 +1,51 @@
+[
+  {
+    "white_not_h": 132483,
+    "black": 9211,
+    "asian": 112250,
+    "hispanic": 12460,
+    "year": "2013"
+  },
+  {
+    "white_not_h": 110500,
+    "black": 6314,
+    "asian": 89339,
+    "hispanic": 7683,
+    "year": "2011"
+  },
+  {
+    "white_not_h": 110729,
+    "black": 4955,
+    "asian": 69590,
+    "hispanic": 7424,
+    "year": "2010"
+  },
+  {
+    "white_not_h": 112183,
+    "black": 4703,
+    "asian": 69049,
+    "hispanic": 6250,
+    "year": "2009"
+  },
+  {
+    "white_not_h": 130350,
+    "black": 11013,
+    "asian": 152714,
+    "hispanic": 17078,
+    "year": "2005"
+  },
+  {
+    "white_not_h": 113822,
+    "black": 8650,
+    "asian": 107690,
+    "hispanic": 13375,
+    "year": "2004"
+  },
+  {
+    "white_not_h": 87056,
+    "black": 5446,
+    "asian": 59292,
+    "hispanic": 7950,
+    "year": "2002"
+  }
+]
