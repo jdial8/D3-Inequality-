@@ -12,10 +12,16 @@
           background-color: #C8C8CC;
         }
 
-    .line {
+    .wline {
       fill: none;
       stroke: #409379;
-      stroke-widht: 2px;
+      stroke-width: 3px;
+    }
+
+    .hline {
+      fill: none;
+      stroke: #b44724;
+      stroke-width: 3px;
     }
 
     .bar {
@@ -98,6 +104,11 @@
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.white_not_h); });
 
+  // 2nd line
+  var valueline2 = d3.line()
+    .x(function(d) { return x(d.year); })
+    .y(function(d) { return y(d.hispanic); });
+
 
   // create the svg
   var svg = d3.select("#linegraph") //select the class with id barchart
@@ -114,23 +125,32 @@
     return Math.max(d.white_not_h, d.black, d.asian, d.hispanic);}
     )]) 
 
+  // bring the data in
+  g.append("path")
+    .data([dataset])
+    .attr("class", "wline")
+    .attr("d", valueline);
 
   g.append("path")
     .data([dataset])
-    .attr("class", "line")
-    .attr("d", valueline)
-  
+    .attr("class", "hline")
+    .attr("d", valueline2);
+
 
 
   // x axis
   svg.append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + height + ')')
+    .attr('transform', 'translate(' + margin.left + ',' + 675 + ')')
     .call(d3.axisBottom(x)) 
     .selectAll("text")
-    .attr("transform", "rotate(-30)")
-    .attr("x", +10)
-    .attr("y", -15);
+    .attr("transform", "rotate(-30)");
+    //.attr("x", +10)
+    //.attr("y", -15);
 
+  // y axis
+  svg.append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
+    .call(d3.axisLeft(y));
 
 
   
