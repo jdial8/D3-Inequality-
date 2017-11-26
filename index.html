@@ -126,16 +126,41 @@
     )]) 
 
   // bring the data in
+
+  // lines
   g.append("path")
     .data([dataset])
     .attr("class", "wline")
-    .attr("d", valueline);
+    .attr("d", valueline)
+    //.enter()
+    //.append("circle")
+    //.attr("cx", x)
+    //.attr("cy", y)
+    //.attr("r", 5);
 
   g.append("path")
     .data([dataset])
     .attr("class", "hline")
     .attr("d", valueline2);
 
+  // points 
+  g.selectAll(".dot")
+    .data(dataset)
+    .enter()
+    .append("circle")
+    .attr("class", "dot")
+    .attr("cx", function(d) {return x(d.year);})
+    .attr("cy", function (d) {return y(d.white_not_h)})
+    .attr("r", 4);
+
+  g.selectAll(".dot2")
+    .data(dataset)
+    .enter()
+    .append("circle")
+    .attr("class", "dot2")
+    .attr("cx", function(d) {return x(d.year);})
+    .attr("cy", function (d) {return y(d.hispanic)})
+    .attr("r", 4);
 
 
   // x axis
