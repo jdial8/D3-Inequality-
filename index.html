@@ -41,10 +41,10 @@
 
     <p> </p>
     <button type = 'button' id = 'Race'> All </button>
-    <button type = 'button' id = 'Race'> Asian </button>
-    <button type = 'button' id = 'Race'> Black </button>
-    <button type = 'button' id = 'Race'> Hispanic </button>
-    <button type = 'button' id = 'Race'> White </button>
+    <button type = 'button' id = 'buttonasian'> Asian </button>
+    <button type = 'button' id = 'buttonblack'> Black </button>
+    <button type = 'button' id = 'buttonhispanic'> Hispanic </button>
+    <button type = 'button' id = 'buttonwhite'> White </button>
     <p class = 'result'> </p> <!--using class instead of id just to show something different-->
     <div class = 'axes'> </div>
 
@@ -125,42 +125,42 @@
     return Math.max(d.white_not_h, d.black, d.asian, d.hispanic);}
     )]) 
 
-  // bring the data in
+  // bring the data in on click of buttons
+  d3.select('#buttonwhite')
+    .on('click', function() {
+      // lines
+      g.append("path")
+        .data([dataset])
+        .attr("class", "wline")
+        .attr("d", valueline) ;
+      // points
+      g.selectAll(".dot")
+        .data(dataset)
+        .enter()
+        .append("circle")
+        .attr("class", "dot")
+        .attr("cx", function(d) {return x(d.year);})
+        .attr("cy", function (d) {return y(d.white_not_h)})
+        .attr("r", 3.5)
+        .on('click', function(d) {console.log(d.year)});
+        });
 
-  // lines
-  g.append("path")
-    .data([dataset])
-    .attr("class", "wline")
-    .attr("d", valueline)
-    //.enter()
-    //.append("circle")
-    //.attr("cx", x)
-    //.attr("cy", y)
-    //.attr("r", 5);
+d3.select('#buttonhispanic')
+    .on('click', function() {
+      g.append("path")
+        .data([dataset])
+        .attr("class", "hline")
+        .attr("d", valueline2);
 
-  g.append("path")
-    .data([dataset])
-    .attr("class", "hline")
-    .attr("d", valueline2);
-
-  // points 
-  g.selectAll(".dot")
-    .data(dataset)
-    .enter()
-    .append("circle")
-    .attr("class", "dot")
-    .attr("cx", function(d) {return x(d.year);})
-    .attr("cy", function (d) {return y(d.white_not_h)})
-    .attr("r", 4);
-
-  g.selectAll(".dot2")
-    .data(dataset)
-    .enter()
-    .append("circle")
-    .attr("class", "dot2")
-    .attr("cx", function(d) {return x(d.year);})
-    .attr("cy", function (d) {return y(d.hispanic)})
-    .attr("r", 4);
+      g.selectAll(".dot2")
+        .data(dataset)
+        .enter()
+        .append("circle")
+        .attr("class", "dot2")
+        .attr("cx", function(d) {return x(d.year);})
+        .attr("cy", function (d) {return y(d.hispanic)})
+        .attr("r", 3.5); 
+      });
 
 
   // x axis
@@ -177,11 +177,10 @@
     .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
     .call(d3.axisLeft(y));
 
+  };
 
-  
 
-  
-
+  function makehist() {
 
   };
 
