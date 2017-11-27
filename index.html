@@ -58,16 +58,17 @@
 
   var parseTime = d3.timeParse("%Y");
 
-  d3.json("Networth.json", function(error, data){
+  d3.json("Networth2.json", function(error, data){
     dataset= data;
 
+  
     dataset.forEach(function(d) {
       d.white_not_h = d.white_not_h
       d.black = +d.black
       d.asian = +d.asian
       d.hispanic = +d.hispanic
       d.year = parseTime(d.year);
-      console.log(d)
+      //console.log(d)
     });
 
   	if (error) {
@@ -79,7 +80,8 @@
   	});
 
   function makelineg(){
-  		console.log(dataset[0].year);
+  		//console.log(dataset[0].year);
+      //console.log(dataset.filter(function(d){return d.Race_Ethnicity == 'black';}))
   	
 
   var margin = {top: 200, right: 100, bottom: 25, left: 100};
@@ -109,6 +111,11 @@
     .x(function(d) { return x(d.year); })
     .y(function(d) { return y(d.hispanic); });
 
+  //networth2 version
+  var ValueLine = d3.line()
+    .x(function(d) { return x(d.year); })
+    .y(function(d) { return y(d.amount); });
+
 
   // create the svg
   var svg = d3.select("#linegraph") //select the class with id barchart
@@ -121,11 +128,13 @@
 
 
   x.domain(d3.extent(dataset, function(d) {return d.year}))
-  y.domain([0, d3.max(dataset, function (d) {
-    return Math.max(d.white_not_h, d.black, d.asian, d.hispanic);}
-    )]) 
+  //y.domain([0, d3.max(dataset, function (d) {
+    //return Math.max(d.white_not_h, d.black, d.asian, d.hispanic);}
+    //)])
+  y.domain([0, d3.max(dataset, function(d) {return d.amount;})])
+  
 
-  // bring the data in on click of buttons
+  // bring the data in on click of buttons (networth)
   d3.select('#buttonwhite')
     .on('click', function() {
       // lines
@@ -144,6 +153,37 @@
         .attr("r", 3.5)
         .on('click', function(d) {console.log(d.year)});
         });
+
+
+  // (with networth2)
+  //make this into a function that works for all buttons
+  d3.select('#buttonwhite')
+    .on('click', function() {
+      // filter
+      data = dataset.filter(function(d){return d.Race_Ethnicity == 'white_not_h';})
+      console.log(data)
+
+      //lines
+      g.append("path")
+        .data([data])
+        .attr("class", "wline")
+        .attr("d", ValueLine) ;
+
+      // points
+      g.selectAll(".dot")
+        .data(data)
+        .enter()
+        .append("circle")
+        .attr("class", "dot")
+        .attr("cx", function(d) {return x(d.year);})
+        .attr("cy", function (d) {return y(d.amount)})
+        .attr("r", 3.5)
+        .on('click', function(d) {practice(d.year, d.Race_Ethnicity);}) ;
+        //.on('click', function(d) {console.log(d.year);
+                                  //console.log(d.Race_Ethnicity);}) ;
+     
+      }); 
+
 
 d3.select('#buttonhispanic')
     .on('click', function() {
@@ -180,9 +220,33 @@ d3.select('#buttonhispanic')
   };
 
 
-  function makehist() {
+  function practice(y, r) {
+    console.log(y)
+    console.log(r)
+  };
+
+
+
+  function makehist(y, r) {
+
+  d3.json("dist.json", function(error, data){
+    
+    dataset = data ;
+  
+    dataset.forEach(function(d) {
+      d.year = d.year
+      d.Race_Ethnicity = +d.Race_Ethnicity
+      d.bucket = +d.bucket
+      d.percent = +d.percent }) ;
+
+    // filter the data based on clicked point
+    dataset= data.filter(function (d) {
+      return d.Race_Ethnicity == y & d.year == year;}) ; 
+
+    });
 
   };
+
 
 </script>
 
