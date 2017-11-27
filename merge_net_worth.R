@@ -55,17 +55,21 @@ for (csv in c("Wealth_Tables_2011.csv", "Wealth_Tables_2010.csv", "wealth-tables
 
 
 #transpose data to prep for line graph
-cols <- wealth$Race_Ethnicity
-test <- as.data.frame(t(wealth[,-1]))
-colnames(test) <- cols
+#cols <- wealth$Race_Ethnicity
+keys <- colnames(wealth)[2:8]
+wealth <- as.tibble(t(wealth[,-1]))
+wealth <- mutate(wealth, year = keys)
+colnames(wealth) <- c("white", "white_not_h", "black", "asian", "other", "hispanic", "not_h", "year")
+wealth <- subset(wealth, select = -c(white, other, not_h))
 
 
+#write to json
+json <- toJSON(wealth, pretty=TRUE)
+write(json, file="networth.json")
 
 #convert wide to long w/ race first
-long_wealth <- gather(wealth, year, amount, `2013`:`2002`, factor_key=TRUE) %>% 
+#long_wealth <- gather(wealth, year, amount, `2013`:`2002`, factor_key=TRUE) %>% 
                 #mutate(year = as.integer(year), amount = as.integer(amount))
-
-long_wealth <- gather(wealth, value = race_ethnicity, amount, `2013`:`2002`, factor_key=TRUE)
 
 
 #ggplot(data=long_wealth, aes(x = year, y = amount, color = Race_Ethnicity, group = Race_Ethnicity)) +
@@ -73,6 +77,4 @@ long_wealth <- gather(wealth, value = race_ethnicity, amount, `2013`:`2002`, fac
   #geom_line()
 
 
-#write to json
-json <- toJSON(wealth, pretty=TRUE)
-write(json, file="wealth.json")
+
