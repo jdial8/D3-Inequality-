@@ -23,7 +23,6 @@ wealth <- mutate(wealth, Race_Ethnicity = tolower(Race_Ethnicity))
 
 #test <- read_csv("Wealth_Tables_2002.csv", skip = 3)[1:6,1:2] 
 
-
 for (csv in c("Wealth_Tables_2011.csv", "Wealth_Tables_2010.csv", "wealth-tables-2009.csv",
               "Wealth_Tables_2005.csv", "Wealth_Tables_2004.csv", "Wealth_Tables_2002.csv")) {
   year <- substr(csv, 15, 18)
@@ -53,28 +52,79 @@ for (csv in c("Wealth_Tables_2011.csv", "Wealth_Tables_2010.csv", "wealth-tables
 }
   
 
+#convert wide to long w/ year first 
+wealth$Race_Ethnicity <- c("white", "white_not_h", "black", "asian", "other", "hispanic", "not_h")
+long_wealth <- gather(wealth, year, amount, `2013`:`2002`, factor_key=TRUE) %>% 
+                select(year, Race_Ethnicity, amount) %>%
+                filter(Race_Ethnicity %in% c("white_not_h", "black", "asian", "hispanic"))
 
-#transpose data to prep for line graph
+json <- toJSON(long_wealth, pretty=TRUE)
+write(json, file="networth2.json")
+
+#transpose data to prep for line graph (instead of long version)
 #cols <- wealth$Race_Ethnicity
-keys <- colnames(wealth)[2:8]
-wealth <- as.tibble(t(wealth[,-1]))
-wealth <- mutate(wealth, year = keys)
-colnames(wealth) <- c("white", "white_not_h", "black", "asian", "other", "hispanic", "not_h", "year")
-wealth <- subset(wealth, select = -c(white, other, not_h))
+#keys <- colnames(wealth)[2:8]
+#wealth <- as.tibble(t(wealth[,-1]))
+#wealth <- mutate(wealth, year = keys)
+#colnames(wealth) <- c("white", "white_not_h", "black", "asian", "other", "hispanic", "not_h", "year")
+#wealth <- subset(wealth, select = -c(white, other, not_h))
 
 
 #write to json
-json <- toJSON(wealth, pretty=TRUE)
-write(json, file="networth.json")
-
-#convert wide to long w/ race first
-#long_wealth <- gather(wealth, year, amount, `2013`:`2002`, factor_key=TRUE) %>% 
-                #mutate(year = as.integer(year), amount = as.integer(amount))
+#json <- toJSON(wealth, pretty=TRUE)
+#write(json, file="Networth.json")
 
 
 #ggplot(data=long_wealth, aes(x = year, y = amount, color = Race_Ethnicity, group = Race_Ethnicity)) +
   #geom_point(size=0.5) +
   #geom_line()
 
+
+
+
+### Distribution Data ### -------------------------------------------------------------------------------
+
+
+wealth_dist <- NULL
+
+for (csv in c("wealth-dist-2013.csv", "Wealth_dist_2011.csv", "Wealth_dist_2010.csv", 
+              "wealth_dist_2005.csv", "Wealth_dist_2004.csv", "wealth_dist_2002.csv")) {
+  year <- substr(csv, 13, 16)
+  if (year == "2011") {
+    dist <- read_csv(csv, skip = 4)[3:9, 1:11]
+  } else if (year %in% c("2004", "2002")) {
+    dist <- read_csv(csv, skip = 1)[3:9, 1:11] 
+  } else {
+    dist <- read_csv(csv, skip = 3)[3:9, 1:11]
+  }
+  
+  colnames(dist)[1:2] <- c("Race_Ethnicity", "total")
+  dist <- subset(dist, select = -c(total))
+  dist$Race_Ethnicity <- c("white", "white_not_h", "black", "asian", "other", "hispanic", "not_h")
+  dist2 <- gather(dist, bucket, percent, `Zero or Negative`:`$500,000 or over`) %>%
+    mutate(year = year) %>%
+    filter(Race_Ethnicity %in% c("white_not_h", "black", "asian", "hispanic"))
+  
+  wealth_dist <- rbind(wealth_dist, dist2)
+}
+
+
+dist <- read_csv("wealth_dist_2002.csv", skip = 1)[3:9, 1:11]
+colnames(dist)[1:2] <- c("Race_Ethnicity", "total")
+dist <- subset(dist, select = -c(total))
+year <- substr("Wealth_dist_2010.csv", 13, 16)
+dist$Race_Ethnicity <- c("white", "white_not_h", "black", "asian", "other", "hispanic", "not_h")
+hmm <- gather(dist, bucket, percent, `Zero or Negative`:`$500,000 or over`) %>%
+        mutate(year = year) 
+                                #%>%
+       # rename("Race_Ethnicity" = "X1")
+
+
+json2 <- toJSON(wealth_dist, pretty=TRUE)
+
+
+
+
+#later: include the totals?
 
 
