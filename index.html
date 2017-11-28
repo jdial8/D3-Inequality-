@@ -12,6 +12,10 @@
           background-color: #C8C8CC;
         }
 
+    svg {
+          background-color: #C8C8CC;
+        }
+
     .wline {
       fill: none;
       stroke: #409379;
@@ -31,6 +35,16 @@
         opacity: .8;
       }
 
+    #linegraph {
+      float: left;
+      width: 800;
+      
+    }
+
+    #histogram {
+      float: left;
+      width: 400;
+    }
 
   </style>
 
@@ -48,9 +62,12 @@
     <p class = 'result'> </p> <!--using class instead of id just to show something different-->
     <div class = 'axes'> </div>
 
-
 <div class = "container"
 	<div id = "linegraph"></div>
+</div>
+
+<div class = "container2"
+  <div id = "histogram"></div>
 </div>
 
 
@@ -123,6 +140,7 @@
     .append('svg')
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom);
+
 
   var g = svg.append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
@@ -232,7 +250,6 @@ d3.select('#buttonhispanic')
     dataset = data.filter(function (d) { 
       return d.year == y.getFullYear() & d.Race_Ethnicity == r ;});
     
-    //console.log(dataset);
     //console.log(y.getFullYear());
 
     dataset.forEach(function (d) {
@@ -249,6 +266,43 @@ d3.select('#buttonhispanic')
       //return d.Race_Ethnicity == r }) ; 
 
     console.log(dataset)
+
+    
+
+    var margin = {top: 150, right: 50, bottom: 100, left: 50};
+    var width = 500 - margin.left - margin.right;
+    var height = 500 - margin.top - margin.bottom;
+
+
+    var xScale = d3.scaleBand()
+      .domain(dataset.map(function(d) {return d.bucket}))
+      .range([0, width]);
+
+    var yScale = d3.scaleLinear()
+     .domain([0, d3.max(dataset, function(d) {return d.percent;})]) 
+     .range([height, 0]); 
+
+
+    var svg2 = d3.select("#histogram") //select the class with id barchart
+      .append('svg')
+      .attr("width", width)
+      .attr("height", width)
+      .attr('transform', 'translate(' + 100 + ',' + 0 + ')');
+
+    var g = svg2.append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.right+ ')');
+
+    g.selectAll(".bar")
+      .data(dataset)
+      .enter()
+      .append("rect")
+      .attr("class", "bar")
+      .attr("x", function(d) {return xScale(d.bucket);})
+      .attr("y", 0) 
+      .attr("width", 10)
+      .attr("height", function(d) {return yScale(d.percent);});
+
+
 
     });
 
