@@ -18,20 +18,32 @@
 
     .wline {
       fill: none;
-      stroke: #409379;
+      stroke: #b44724;
       stroke-width: 3px;
     }
 
     .hline {
       fill: none;
-      stroke: #b44724;
+      stroke: #409379;
+      stroke-width: 3px;
+    }
+
+    .aline {
+      fill: none;
+      stroke: #000026;
+      stroke-width: 3px;
+    }
+
+    .bline {
+      fill: none;
+      stroke: #C35882;
       stroke-width: 3px;
     }
 
     .bar {
         stroke: #000000;
         stroke-width: 1;
-        fill: #FF9638;
+        fill: #000026;
         opacity: .8;
       }
 
@@ -54,7 +66,7 @@
     <h4> Click to select groups. </h4>
 
     <p> </p>
-    <button type = 'button' id = 'Race'> All </button>
+    <!-- <button type = 'button' id = 'Race'> All </button> -->
     <button type = 'button' id = 'buttonasian'> Asian </button>
     <button type = 'button' id = 'buttonblack'> Black </button>
     <button type = 'button' id = 'buttonhispanic'> Hispanic </button>
@@ -195,30 +207,46 @@ d3.select('#buttonhispanic')
   //make this into a function that works for all buttons
   d3.select('#buttonwhite')
     .on('click', function() {
-      // filter
-      data = dataset.filter(function(d){return d.Race_Ethnicity == 'white_not_h';})
-      console.log(data)
+      plot(dataset, "white_not_h", "wline", ".dot", "dot");  
+      }); 
 
-      //lines
+  d3.select('#buttonhispanic')
+    .on('click', function() {
+      plot(dataset, "hispanic", "hline", ".dot2", "dot2");
+    });
+
+  d3.select('#buttonasian')
+    .on('click', function() {
+      plot(dataset, "asian", "aline", ".dot3", "dot3");
+    });
+
+  d3.select('#buttonblack')
+    .on('click', function() {
+      plot(dataset, "black", "bline", ".dot4", "dot4");
+    });
+
+  function plot(data, race, lineclass, dot, dotclass) {
+    // filter
+      data = dataset.filter(function(d){return d.Race_Ethnicity == race;})
+
+    //lines
       g.append("path")
         .data([data])
-        .attr("class", "wline")
+        .attr("class", lineclass)
         .attr("d", ValueLine) ;
 
       // points
-      g.selectAll(".dot")
+      g.selectAll(dot)
         .data(data)
         .enter()
         .append("circle")
-        .attr("class", "dot")
+        .attr("class", dotclass)
         .attr("cx", function(d) {return x(d.year);})
         .attr("cy", function (d) {return y(d.amount)})
         .attr("r", 4.5)
         .on('click', function(d) {makehist(d.year, d.Race_Ethnicity);}) ;
-        //.on('click', function(d) {console.log(d.year);
-                                  //console.log(d.Race_Ethnicity);}) ;
-     
-      }); 
+  };  
+
 
   // x axis
   svg.append('g')
