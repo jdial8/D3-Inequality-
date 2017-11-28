@@ -271,7 +271,7 @@ d3.select('#buttonhispanic')
 
     var margin = {top: 100, right: 50, bottom: 50, left: 50};
     var width = 400 - margin.left - margin.right;
-    var height = 350 - margin.top - margin.bottom;
+    var height = 800 - margin.top - margin.bottom;
 
 
     var xScale = d3.scaleBand()
@@ -280,7 +280,7 @@ d3.select('#buttonhispanic')
 
     var yScale = d3.scaleLinear()
      .domain([0, d3.max(dataset, function(d) {return d.percent;})]) 
-     .range([height, 0]); 
+     .range([300, 0]); 
 
 
     var svg2 = d3.select("#histogram") //select the class with id barchart
@@ -298,11 +298,29 @@ d3.select('#buttonhispanic')
       .append("rect")
       .attr("class", "bar")
       .attr("x", function (d) {return xScale(d.bucket);})
-      //.attr("y", height - margin.bottom) 
       .attr("y", function (d) {return yScale(d.percent);})
       .attr("width", xScale.bandwidth())
-      //.attr("height", function(d) {return yScale(d.percent);});
-      .attr("height", function (d) {return height - yScale(d.percent)})
+      .attr("height", function (d) {return 300 - yScale(d.percent)})
+  
+    // x axis
+    svg2.append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + 350 + ')')
+      .call(d3.axisBottom(xScale)) 
+      .selectAll("text")
+      .attr("transform", "rotate(-30)");
+
+    // y axis
+    svg2.append('g')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
+    .call(d3.axisLeft(yScale));
+
+    // graph title
+    svg2.append("text")
+    .attr("y", margin.top/3)
+    .attr("x", width/2)
+    .style("text-anchor", "middle")
+    .style("font-size", "16px")
+    .text("Title");
 
 
 
