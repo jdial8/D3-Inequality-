@@ -271,7 +271,8 @@
         .on('click', function(d) {
           count++;
           console.log(count);
-           //makehist(d.year, d.Race_Ethnicity, svg2);}) ;
+          console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
+          console.log(d3.select(this).attr("class"));
           if (count == 1) {
             makehist(d.year, d.Race_Ethnicity, svg2);
           } else {
