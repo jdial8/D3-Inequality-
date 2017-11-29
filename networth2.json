@@ -1,0 +1,142 @@
+[
+  {
+    "year": "2013",
+    "Race_Ethnicity": "white_not_h",
+    "amount": 132483
+  },
+  {
+    "year": "2013",
+    "Race_Ethnicity": "black",
+    "amount": 9211
+  },
+  {
+    "year": "2013",
+    "Race_Ethnicity": "asian",
+    "amount": 112250
+  },
+  {
+    "year": "2013",
+    "Race_Ethnicity": "hispanic",
+    "amount": 12460
+  },
+  {
+    "year": "2011",
+    "Race_Ethnicity": "white_not_h",
+    "amount": 110500
+  },
+  {
+    "year": "2011",
+    "Race_Ethnicity": "black",
+    "amount": 6314
+  },
+  {
+    "year": "2011",
+    "Race_Ethnicity": "asian",
+    "amount": 89339
+  },
+  {
+    "year": "2011",
+    "Race_Ethnicity": "hispanic",
+    "amount": 7683
+  },
+  {
+    "year": "2010",
+    "Race_Ethnicity": "white_not_h",
+    "amount": 110729
+  },
+  {
+    "year": "2010",
+    "Race_Ethnicity": "black",
+    "amount": 4955
+  },
+  {
+    "year": "2010",
+    "Race_Ethnicity": "asian",
+    "amount": 69590
+  },
+  {
+    "year": "2010",
+    "Race_Ethnicity": "hispanic",
+    "amount": 7424
+  },
+  {
+    "year": "2009",
+    "Race_Ethnicity": "white_not_h",
+    "amount": 112183
+  },
+  {
+    "year": "2009",
+    "Race_Ethnicity": "black",
+    "amount": 4703
+  },
+  {
+    "year": "2009",
+    "Race_Ethnicity": "asian",
+    "amount": 69049
+  },
+  {
+    "year": "2009",
+    "Race_Ethnicity": "hispanic",
+    "amount": 6250
+  },
+  {
+    "year": "2005",
+    "Race_Ethnicity": "white_not_h",
+    "amount": 130350
+  },
+  {
+    "year": "2005",
+    "Race_Ethnicity": "black",
+    "amount": 11013
+  },
+  {
+    "year": "2005",
+    "Race_Ethnicity": "asian",
+    "amount": 152714
+  },
+  {
+    "year": "2005",
+    "Race_Ethnicity": "hispanic",
+    "amount": 17078
+  },
+  {
+    "year": "2004",
+    "Race_Ethnicity": "white_not_h",
+    "amount": 113822
+  },
+  {
+    "year": "2004",
+    "Race_Ethnicity": "black",
+    "amount": 8650
+  },
+  {
+    "year": "2004",
+    "Race_Ethnicity": "asian",
+    "amount": 107690
+  },
+  {
+    "year": "2004",
+    "Race_Ethnicity": "hispanic",
+    "amount": 13375
+  },
+  {
+    "year": "2002",
+    "Race_Ethnicity": "white_not_h",
+    "amount": 87056
+  },
+  {
+    "year": "2002",
+    "Race_Ethnicity": "black",
+    "amount": 5446
+  },
+  {
+    "year": "2002",
+    "Race_Ethnicity": "asian",
+    "amount": 59292
+  },
+  {
+    "year": "2002",
+    "Race_Ethnicity": "hispanic",
+    "amount": 7950
+  }
+]
