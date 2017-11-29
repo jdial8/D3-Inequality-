@@ -60,6 +60,8 @@
 </head>
 <body>
 
+
+    <h2> Wealth Gaps and Distributions in the U.S. </h2>
     <h4> Click to select groups. </h4>
 
     <p> </p>
@@ -215,23 +217,6 @@
         });
 
 
-  d3.select('#buttonhispanic')
-    .on('click', function() {
-      g.append("path")
-        .data([dataset])
-        .attr("class", "hline")
-        .attr("d", valueline2);
-
-      g.selectAll(".dot2")
-        .data(dataset)
-        .enter()
-        .append("circle")
-        .attr("class", "dot2")
-        .attr("cx", function(d) {return x(d.year);})
-        .attr("cy", function (d) {return y(d.hispanic)})
-        .attr("r", 3.5); 
-      });
-
   // (with networth2)
   d3.select('#buttonwhite')
     .on('click', function() {
@@ -296,10 +281,22 @@
     //.attr("x", +10)
     //.attr("y", -15);
 
+  // x axis text
+  svg.append("text")
+    .attr('transform', 'translate(' + (width + margin.left + margin.right)/2 + ',' + 725 + ')')
+    .style("text-anchor", "middle")
+    .text("Year");
+
   // y axis
   svg.append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
     .call(d3.axisLeft(y));
+
+  // y axis text 
+  svg.append("text")
+    .attr('transform', 'translate('+ margin.left/3 + ',' + (height + margin.top + margin.bottom)/2 + ')rotate(-90)')
+    .style("text-anchor", "middle")
+    .text("Median Net Worth ($)");
 
   };
 
@@ -336,7 +333,7 @@
 
     
 
-    var margin = {top: 100, right: 50, bottom: 50, left: 50};
+    var margin = {top: 100, right: 40, bottom: 50, left: 60};
     var width = 400 - margin.left - margin.right;
     var height = 800 - margin.top - margin.bottom;
 
@@ -346,7 +343,8 @@
       .range([0, width]);
 
     var yScale = d3.scaleLinear()
-     .domain([0, d3.max(dataset, function(d) {return d.percent;})]) 
+     //.domain([0, d3.max(dataset, function(d) {return d.percent;})]) 
+     .domain([0, 40]) 
      .range([300, 0]); 
 
 
@@ -390,12 +388,10 @@
     //svg2.append("text")
     svg.append("text")
       .attr("y", margin.top/3)
-      .attr("x", width/2)
+      .attr("x", (width + margin.left + margin.right)/2)
       .style("text-anchor", "middle")
       .style("font-size", "16px")
-      .text("Title");
-
-    var clicked = "yes"
+      .text("Distribution of Net Worth");
 
     });
 
