@@ -253,6 +253,9 @@
       plot(dataset, "black", "bline", ".dot4", "dot4");
     });
 
+
+  var count = 0;
+
   function plot(data, race, lineclass, dot, dotclass) {
     // filter
       data = dataset.filter(function(d){return d.Race_Ethnicity == race;})
@@ -272,7 +275,15 @@
         .attr("cx", function(d) {return x(d.year);})
         .attr("cy", function (d) {return y(d.amount)})
         .attr("r", 5.5)
-        .on('click', function(d) {makehist(d.year, d.Race_Ethnicity);}) ;
+        .on('click', function(d) {
+          count++;
+          console.log(count);
+           //makehist(d.year, d.Race_Ethnicity, svg2);}) ;
+          if (count == 1) {
+            makehist(d.year, d.Race_Ethnicity, svg2);
+          } else {
+            makehist(d.year, d.Race_Ethnicity, svg3);
+          }; })
   };  
 
 
@@ -299,7 +310,7 @@
   };
 
 
-  function makehist(y, r) {
+  function makehist(y, r, svg) {
 
   d3.json("wealthdist.json", function(error, data){
     
@@ -339,13 +350,16 @@
      .range([300, 0]); 
 
 
-    var svg2 = d3.select("#histogram") //select the class with id barchart
-      .append('svg')
-      .attr("width", width + margin.left + margin.right)
-      .attr("height", height + margin.top + margin.bottom)
-      .attr('transform', 'translate(' + 100 + ',' + 0 + ')');
+    //var svg2 = d3.select("#histogram") //select the class with id barchart
+      //.append('svg')
+      //.attr("width", width + margin.left + margin.right)
+      //.attr("height", height + margin.top + margin.bottom)
+      //.attr('transform', 'translate(' + 100 + ',' + 0 + ')');
 
-    var g = svg2.append('g')
+    //var g = svg2.append('g')
+      //.attr('transform', 'translate(' + margin.left + ',' + margin.right+ ')');
+
+    var g = svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.right+ ')');
 
     g.selectAll(".bar")
@@ -359,24 +373,27 @@
       .attr("height", function (d) {return 300 - yScale(d.percent)})
   
     // x axis
-    svg2.append('g')
+    //svg2.append('g')
+    svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + 350 + ')')
       .call(d3.axisBottom(xScale)) 
       .selectAll("text")
       .attr("transform", "rotate(-30)");
 
     // y axis
-    svg2.append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
-    .call(d3.axisLeft(yScale));
+    //svg2.append('g')
+    svg.append('g')
+      .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
+      .call(d3.axisLeft(yScale));
 
     // graph title
-    svg2.append("text")
-    .attr("y", margin.top/3)
-    .attr("x", width/2)
-    .style("text-anchor", "middle")
-    .style("font-size", "16px")
-    .text("Title");
+    //svg2.append("text")
+    svg.append("text")
+      .attr("y", margin.top/3)
+      .attr("x", width/2)
+      .style("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text("Title");
 
     var clicked = "yes"
 
