@@ -217,7 +217,7 @@
         });
 
 
-  // (with networth2)
+  // make lines after click of button (with networth2)
   d3.select('#buttonwhite')
     .on('click', function() {
       plot(dataset, "white_not_h", "wline", ".dot", "dot");  
@@ -239,7 +239,15 @@
     });
 
 
+
   var count = 0;
+
+  var tooltip = d3.select("body")
+    .append("div")
+    .style("position", "absolute")
+    .style("z-index", "10")
+    .style("visibility", "hidden")
+    .text("a simple tooltip");
 
   function plot(data, race, lineclass, dot, dotclass) {
     // filter
@@ -269,6 +277,15 @@
           } else {
             makehist(d.year, d.Race_Ethnicity, svg3);
           }; })
+        .on("mouseover", function(d) {
+          d3.select(this).attr('fill-opacity', 0.5);
+          tooltip.text(d.amount); 
+          return tooltip.style("visibility", "visible");})
+        .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
+        .on("mouseout", function(d){
+          d3.select(this).attr('fill-opacity', 1);
+          return tooltip.style("visibility", "hidden");
+          });
   };  
 
 
