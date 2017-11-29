@@ -87,7 +87,7 @@
 
   var parseTime = d3.timeParse("%Y");
 
-  d3.json("Networth2.json", function(error, data){
+  d3.json("./Networth2.json", function(error, data){
     dataset= data;
 
   
@@ -272,7 +272,7 @@
           count++;
           console.log(count);
           console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
-          console.log(d3.select(this).attr("class"));
+          console.log(d3.select(this));
           if (count == 1) {
             makehist(d.year, d.Race_Ethnicity, svg2);
           } else {
@@ -327,7 +327,7 @@
 
   function makehist(y, r, svg) {
 
-  d3.json("wealthdist.json", function(error, data){
+  d3.json("./wealthdist.json", function(error, data){
     
     dataset = data.filter(function (d) { 
       return d.year == y.getFullYear() & d.Race_Ethnicity == r ;});
@@ -387,6 +387,7 @@
       .attr("y", function (d) {return yScale(d.percent);})
       .attr("width", xScale.bandwidth())
       .attr("height", function (d) {return 300 - yScale(d.percent)})
+      //.attr("fill")
   
     // x axis
     //svg2.append('g')
