@@ -40,7 +40,6 @@
     .bar {
         stroke: #000000;
         stroke-width: 1;
-        fill: #000026;
         opacity: .8;
       }
 
@@ -265,6 +264,7 @@
         .enter()
         .append("circle")
         .attr("class", dotclass)
+        //.attr("class", lineclass)
         .attr("cx", function(d) {return x(d.year);})
         .attr("cy", function (d) {return y(d.amount)})
         .attr("r", 5.5)
@@ -332,7 +332,7 @@
     dataset = data.filter(function (d) { 
       return d.year == y.getFullYear() & d.Race_Ethnicity == r ;});
     
-    //console.log(y.getFullYear());
+    console.log(r);
 
     dataset.forEach(function (d) {
       d.Race_Ethnicity = d.Race_Ethnicity
@@ -342,14 +342,10 @@
       console.log(d.year);  
       })
       
-
-    // filter the data based on clicked point
-    //dataset2 = dataset.filter(function (d) { return d.year == y ;}) ;
-      //return d.Race_Ethnicity == r }) ; 
-
     console.log(dataset)
 
-    
+    var race = r
+    var year = y.getFullYear()
 
     var margin = {top: 100, right: 40, bottom: 50, left: 60};
     var width = 400 - margin.left - margin.right;
@@ -387,7 +383,12 @@
       .attr("y", function (d) {return yScale(d.percent);})
       .attr("width", xScale.bandwidth())
       .attr("height", function (d) {return 300 - yScale(d.percent)})
-      //.attr("fill")
+      .attr("fill", function(r) {
+        if (race == "white_not_h") {return "#b44724"}
+        else if (race == "hispanic") {return "#409379"}
+        else if (race == "asian") {return "#000026"}
+        else {return "#C35882"}
+      });
   
     // x axis
     //svg2.append('g')
