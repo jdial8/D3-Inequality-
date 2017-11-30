@@ -40,7 +40,7 @@
     .bar {
         stroke: #000000;
         stroke-width: 1;
-        opacity: .8;
+        opacity: .7;
       }
 
     #linegraph {
@@ -69,6 +69,7 @@
     <button type = 'button' id = 'buttonblack'> Black </button>
     <button type = 'button' id = 'buttonhispanic'> Hispanic </button>
     <button type = 'button' id = 'buttonwhite'> White </button>
+
     <p class = 'result'> </p> <!--using class instead of id just to show something different-->
     <div class = 'axes'> </div>
 
@@ -81,6 +82,11 @@
   <div id = "histogram2"</div>
 </div>
 
+<div>
+<p>
+      <button type = 'button' id = 'reset'> Reset </button>
+</p>
+</div>
 
 <script>
 
@@ -237,6 +243,13 @@
       plot(dataset, "black", "bline", ".dot4", "dot4");
     });
 
+  //reset button
+  d3.select('#reset')
+    .on('click', function() {//svg2.selectAll(".bar").remove();
+                            svg2.selectAll("g").remove();
+                            svg3.selectAll("g").remove(); 
+                            svg2.select("text").remove();
+                            svg3.select("text").remove();})
 
 
   var count = 0;
@@ -270,10 +283,10 @@
         .attr("r", 5.5)
         .on('click', function(d) {
           count++;
-          console.log(count);
-          console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
-          console.log(d3.select(this));
-          if (count == 1) {
+          console.log(count % 2);
+          //console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
+          //console.log(d3.select(this));
+          if (count % 2 == 1) {
             makehist(d.year, d.Race_Ethnicity, svg2);
           } else {
             makehist(d.year, d.Race_Ethnicity, svg3);
@@ -390,6 +403,15 @@
         else {return "#C35882"}
       });
   
+    // graph title
+    //svg2.append("text")
+    svg.append("text")
+      .attr("y", margin.top/3)
+      .attr("x", (width + margin.left + margin.right)/2)
+      .style("text-anchor", "middle")
+      .style("font-size", "16px")
+      .text(year + " Distribution of Net Worth ");
+
     // x axis
     //svg2.append('g')
     svg.append('g')
@@ -404,14 +426,7 @@
       .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
       .call(d3.axisLeft(yScale));
 
-    // graph title
-    //svg2.append("text")
-    svg.append("text")
-      .attr("y", margin.top/3)
-      .attr("x", (width + margin.left + margin.right)/2)
-      .style("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text("Distribution of Net Worth");
+
 
     });
 
