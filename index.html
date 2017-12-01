@@ -256,8 +256,8 @@
     .on('click', function() {//svg2.selectAll(".bar").remove();
                             svg2.selectAll("g").remove();
                             svg3.selectAll("g").remove(); 
-                            svg2.select("text").remove();
-                            svg3.select("text").remove();})
+                            svg2.selectAll("text").remove();
+                            svg3.selectAll("text").remove();})
 
   var selected = false;
 
@@ -273,6 +273,7 @@
   function plot(data, race, lineclass, dot, dotclass) {
     // filter
       data = dataset.filter(function(d){return d.Race_Ethnicity == race;})
+      console.log(data)
 
     //lines
       g.append("path")
@@ -312,8 +313,8 @@
 
       // labels
       svg.append("text")
-        .attr('transform', 'translate(' + (width + margin.left) +
-                               ',' + (y(data[data.length -1].amount)) + ')')
+        .attr('transform', 'translate(' + (width + margin.left + 10) +
+                               ',' + (y(data[0].amount) + margin.top) + ')')
         .text(race);
   };  
 
