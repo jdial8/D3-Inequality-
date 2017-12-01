@@ -63,15 +63,12 @@
     <h2> Wealth Gaps and Distributions in the U.S. </h2>
     <h4> Click to select groups. </h4>
 
-    <p> </p>
+    <p> 
     <!-- <button type = 'button' id = 'Race'> All </button> -->
     <button type = 'button' id = 'buttonasian'> Asian </button>
     <button type = 'button' id = 'buttonblack'> Black </button>
     <button type = 'button' id = 'buttonhispanic'> Hispanic </button>
-    <button type = 'button' id = 'buttonwhite'> White </button>
-
-    <p class = 'result'> </p> <!--using class instead of id just to show something different-->
-    <div class = 'axes'> </div>
+    <button type = 'button' id = 'buttonwhite'> White </button> </p>
 
 <div class = "container"
 	<div id = "linegraph"></div>
@@ -119,9 +116,9 @@
       //console.log(dataset.filter(function(d){return d.Race_Ethnicity == 'black';}))
   	
 
-  var margin = {top: 100, right: 100, bottom: 40, left: 100};
+  var margin = {top: 30, right: 100, bottom: 40, left: 100};
   var width = 800 - margin.left - margin.right;
-  var height = 800 - margin.top - margin.bottom;
+  var height = 600 - margin.top - margin.bottom;
 
 
   //var xScale = d3.scaleTime()
@@ -160,7 +157,7 @@
 
 
   var g = svg.append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')');
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
   // create the histogram svgs
   var svg2 = d3.select("#histogram") //select the class with id barchart
@@ -332,7 +329,7 @@
 
   // y axis
   svg.append('g')
-    .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
+    .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')')
     .call(d3.axisLeft(y));
 
   // y axis text 
