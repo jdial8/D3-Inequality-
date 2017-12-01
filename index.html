@@ -16,25 +16,25 @@
     .wline {
       fill: none;
       stroke: #b44724;
-      stroke-width: 3.5px;
+      stroke-width: 4px;
     }
 
     .hline {
       fill: none;
       stroke: #409379;
-      stroke-width: 3.5px;
+      stroke-width: 4px;
     }
 
     .aline {
       fill: none;
       stroke: #000026;
-      stroke-width: 3.5px;
+      stroke-width: 4px;
     }
 
     .bline {
       fill: none;
       stroke: #C35882;
-      stroke-width: 3.5px;
+      stroke-width: 4px;
     }
 
     .bar {
@@ -97,7 +97,6 @@
   d3.json("./networth2.json", function(error, data){
     dataset= data;
 
-  
     dataset.forEach(function(d) {
       d.white_not_h = d.white_not_h
       d.black = +d.black
@@ -117,9 +116,7 @@
   	});
 
   function makelineg(){
-  		//console.log(dataset[0].year);
-      //console.log(dataset.filter(function(d){return d.Race_Ethnicity == 'black';}))
-  	
+  		//console.log(dataset[0].year);  	
 
   var margin = {top: 30, right: 100, bottom: 40, left: 100};
   var width = 800 - margin.left - margin.right;
@@ -302,19 +299,22 @@
         //.attr("class", lineclass)
         .attr("cx", function(d) {return x(d.year);})
         .attr("cy", function (d) {return y(d.amount)})
-        .attr("r", 5.5)
+        .attr("r", 6)
         .on('click', function(d) {
           count++;
           console.log(count % 2);
           //console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
           //console.log(d3.select(this));
           if (count % 2 == 1) {
+            svg2.select("text").remove();
             makehist(d.year, d.Race_Ethnicity, svg2);
           } else {
+            svg3.select("text").remove();
             makehist(d.year, d.Race_Ethnicity, svg3);
           }; })
         .on("mouseover", function(d) {
           d3.select(this).attr('fill-opacity', 0.5);
+          d3.select(this).style("cursor", "pointer");
           tooltip.text(d.amount); 
           return tooltip.style("visibility", "visible");})
         .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
@@ -355,6 +355,18 @@
     .style("text-anchor", "middle")
     .text("Median Net Worth ($)");
 
+
+  // starting text
+  svg2.append("text")
+    .attr('transform', 'translate(' + 55 + ',' + (svg.attr("height")/2)/2 + ')')
+    .text("Click a point on the graph to view distribution")
+    .attr("fill-opacity", 0.6);
+  svg3.append("text")
+    .attr('transform', 'translate(' + 55 + ',' + (svg.attr("height")/2)/2 + ')')
+    .text("Click a point on the graph to view distribution")
+    .attr("fill-opacity", 0.6);
+
+
   };
 
 
@@ -371,8 +383,6 @@
     var dataset = data.filter(function (d) { 
       return d.year == y.getFullYear() & d.Race_Ethnicity == r ;});
     
-    console.log(r);
-
     dataset.forEach(function (d) {
       d.Race_Ethnicity = d.Race_Ethnicity
       d.bucket = d.bucket
@@ -396,8 +406,7 @@
       .range([0, width]);
 
     var yScale = d3.scaleLinear()
-     //.domain([0, d3.max(dataset, function(d) {return d.percent;})]) 
-     .domain([0, 40]) 
+     .domain([0, 40]) // same range for all histograms plotted
      .range([height, 0]); 
 
     var g = svg.append('g')
@@ -420,7 +429,6 @@
       });
   
     // graph title
-    //svg2.append("text")
     svg.append("text")
       .attr("y", margin.top)
       .attr("x", (width + margin.left + margin.right)/2)
@@ -429,9 +437,7 @@
       .text(year + " Distribution of Net Worth ");
 
     // x axis
-    //svg2.append('g')
     svg.append('g')
-      //.attr('transform', 'translate(' + margin.left + ',' + 350 + ')')
       .attr('transform', 'translate(' + margin.left + ',' + (height + margin.top) + ')')
       .call(d3.axisBottom(xScale))
       .selectAll("text")
@@ -440,7 +446,6 @@
       .attr("transform", "rotate(-30)");
 
     // y axis
-    //svg2.append('g')
     svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
       .call(d3.axisLeft(yScale));
