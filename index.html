@@ -54,6 +54,10 @@
       width: 400;
     }
 
+    .reset {  
+      float: right;
+      }
+
   </style>
 
 </head>
@@ -70,16 +74,16 @@
     <button type = 'button' id = 'buttonhispanic'> Hispanic </button>
     <button type = 'button' id = 'buttonwhite'> White </button> </p>
 
-<div class = "container"
+<div class = "container">
 	<div id = "linegraph"></div>
 </div>
 
-<div class = "container2"
+<div class = "container2">
   <div id = "histogram"></div>
   <div id = "histogram2"</div>
 </div>
 
-<div>
+<div class = "reset">
 <p>
       <button type = 'button' id = 'reset'> Reset </button>
 </p>
@@ -155,6 +159,8 @@
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom);
 
+  console.log(svg.attr("width"))
+
 
   var g = svg.append('g')
     .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
@@ -163,13 +169,13 @@
   var svg2 = d3.select("#histogram") //select the class with id barchart
       .append('svg')
       .attr("width", 400)
-      .attr("height", 400)
-      .attr('transform', 'translate(' + 100 + ',' + 0 + ')');
+      .attr("height", svg.attr("height")/2)
+      .attr('transform', 'translate(' + 50 + ',' + 0 + ')');
 
   svg2.append("rect")
             .attr("x", 0)
             .attr("y", 0)
-            .attr("height", 400)
+            .attr("height", svg.attr("height")/2)
             .attr("width", 400)
             .style("stroke", "#000000")
             .style("fill", "none")
@@ -178,13 +184,13 @@
   var svg3 = d3.select("#histogram2") //select the class with id barchart
       .append('svg')
       .attr("width", 400)
-      .attr("height", 400)
-      .attr('transform', 'translate(' + 100 + ',' + 0 + ')');
+      .attr("height", svg.attr("height")/2)
+      .attr('transform', 'translate(' + 50 + ',' + 0 + ')');
 
   svg3.append("rect")
             .attr("x", 0)
             .attr("y", 0)
-            .attr("height", 400)
+            .attr("height", svg.attr("height")/2)
             .attr("width", 400)
             .style("stroke", "#000000")
             .style("fill", "none")
@@ -369,9 +375,9 @@
     var race = r
     var year = y.getFullYear()
 
-    var margin = {top: 100, right: 40, bottom: 50, left: 60};
+    var margin = {top: 35, right: 30, bottom: 50, left: 60};
     var width = 400 - margin.left - margin.right;
-    var height = 800 - margin.top - margin.bottom;
+    var height = 300 - margin.top - margin.bottom;
 
 
     var xScale = d3.scaleBand()
@@ -381,20 +387,10 @@
     var yScale = d3.scaleLinear()
      //.domain([0, d3.max(dataset, function(d) {return d.percent;})]) 
      .domain([0, 40]) 
-     .range([300, 0]); 
-
-
-    //var svg2 = d3.select("#histogram") //select the class with id barchart
-      //.append('svg')
-      //.attr("width", width + margin.left + margin.right)
-      //.attr("height", height + margin.top + margin.bottom)
-      //.attr('transform', 'translate(' + 100 + ',' + 0 + ')');
-
-    //var g = svg2.append('g')
-      //.attr('transform', 'translate(' + margin.left + ',' + margin.right+ ')');
+     .range([height, 0]); 
 
     var g = svg.append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + margin.right+ ')');
+      .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
     g.selectAll(".bar")
       .data(dataset)
@@ -404,7 +400,7 @@
       .attr("x", function (d) {return xScale(d.bucket);})
       .attr("y", function (d) {return yScale(d.percent);})
       .attr("width", xScale.bandwidth())
-      .attr("height", function (d) {return 300 - yScale(d.percent)})
+      .attr("height", function (d) {return height - yScale(d.percent)})
       .attr("fill", function(r) {
         if (race == "white_not_h") {return "#b44724"}
         else if (race == "hispanic") {return "#409379"}
@@ -415,7 +411,7 @@
     // graph title
     //svg2.append("text")
     svg.append("text")
-      .attr("y", margin.top/3)
+      .attr("y", margin.top)
       .attr("x", (width + margin.left + margin.right)/2)
       .style("text-anchor", "middle")
       .style("font-size", "16px")
@@ -424,8 +420,9 @@
     // x axis
     //svg2.append('g')
     svg.append('g')
-      .attr('transform', 'translate(' + margin.left + ',' + 350 + ')')
-      .call(d3.axisBottom(xScale)) 
+      //.attr('transform', 'translate(' + margin.left + ',' + 350 + ')')
+      .attr('transform', 'translate(' + margin.left + ',' + (height + margin.top) + ')')
+      .call(d3.axisBottom(xScale))
       .selectAll("text")
       .attr("transform", "rotate(-30)");
 
@@ -434,6 +431,12 @@
     svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
       .call(d3.axisLeft(yScale));
+
+    svg.append("text")
+      .attr('transform', 'translate('+ margin.left/2 + ',' + (height + margin.top + margin.bottom)/2 + ')rotate(-90)')
+      .style("text-anchor", "middle")
+      .style("font-size", "10px")
+      .text("Percent of Group");
 
 
 
