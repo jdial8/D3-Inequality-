@@ -54,6 +54,54 @@
       width: 400;
     }
 
+    button {
+      background-color: white;
+      color: black;
+      font-size: 20px;
+      padding: 8px 24px;
+      border-radius: 10px;
+    }
+
+    #buttonasian {
+      border: 2px solid #000026;
+    }
+
+    #buttonasian:hover {
+      background-color: #000026; /* maybe do box-shadow instead */
+      color: white;
+    }
+
+    #buttonblack {
+      border: 2px solid #C35882;
+    }
+
+    #buttonblack:hover {
+      background-color: #C35882; /* maybe do box-shadow instead */
+      color: white;
+    }
+
+    #buttonhispanic {
+      border: 2px solid #409379;
+    }
+
+    #buttonhispanic:hover {
+      background-color: #409379; /* maybe do box-shadow instead */
+      color: white;
+    }
+
+    #buttonwhite {
+      border: 2px solid #b44724;
+    }
+
+    #buttonwhite:hover {
+      background-color: #b44724; /* maybe do box-shadow instead */
+      color: white;
+    }
+
+    #buttonall {
+      border: 2px solid #000000;
+    }
+
     .reset {  
       float: right;
       }
@@ -65,8 +113,8 @@
 
 
     <h2> Wealth Gaps and Distributions in the U.S. </h2>
-    <h4> Click to select groups. </h4>
-
+    <!-- <h4> Click to select groups. </h4> -->
+    <p> </p>
     <p> 
     <!-- <button type = 'button' id = 'Race'> All </button> -->
     <button type = 'button' id = 'buttonasian'> Asian </button>
@@ -315,7 +363,7 @@
         .on("mouseover", function(d) {
           d3.select(this).attr('fill-opacity', 0.5);
           d3.select(this).style("cursor", "pointer");
-          tooltip.text(d.amount); 
+          tooltip.text("$" + d.amount); 
           return tooltip.style("visibility", "visible");})
         .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(d){
