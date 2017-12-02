@@ -114,7 +114,7 @@
 
     <h2> Wealth Gaps and Distributions in the U.S. </h2>
     <!-- <h4> Click to select groups. </h4> -->
-    <p> </p>
+
     <p> 
     <!-- <button type = 'button' id = 'Race'> All </button> -->
     <button type = 'button' id = 'buttonasian'> Asian </button>
@@ -132,11 +132,11 @@
   <div id = "histogram2"</div>
 </div>
 
-<div class = "reset">
+<!--  <div class = "reset">
 <p>
       <button type = 'button' id = 'reset'> Reset </button>
 </p>
-</div>
+</div> -->
 
 <script>
 
@@ -316,6 +316,13 @@
                             svg2.selectAll("text").remove();
                             svg3.selectAll("text").remove();})
 
+  function reset() {
+    svg2.selectAll("g").remove();
+    svg3.selectAll("g").remove(); 
+    svg2.selectAll("text").remove();
+    svg3.selectAll("text").remove();
+  }
+
   var selected = false;
 
   var count = 0;
@@ -354,10 +361,11 @@
           //console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
           //console.log(d3.select(this));
           if (count % 2 == 1) {
-            svg2.select("text").remove();
+            //svg2.select("text").remove();
+            reset()
             makehist(d.year, d.Race_Ethnicity, svg2);
           } else {
-            svg3.select("text").remove();
+            //svg3.select("text").remove();
             makehist(d.year, d.Race_Ethnicity, svg3);
           }; })
         .on("mouseover", function(d) {
