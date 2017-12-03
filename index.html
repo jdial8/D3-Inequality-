@@ -12,6 +12,10 @@
           background-color: #C8C8CC;
         } */
 
+    h1 {
+      font-family: Futura;
+
+    }
 
     .wline {
       fill: none;
@@ -37,6 +41,23 @@
       stroke-width: 4px;
     }
 
+    .wlabel {
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .hlabel {
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .alabel {
+      font-size: 13px;
+      font-weight: bold;
+    }
+    .blabel {
+      font-size: 13px;
+      font-weight: bold;
+    }
+
     .bar {
         stroke: #000000;
         stroke-width: 1;
@@ -57,9 +78,10 @@
     button {
       background-color: white;
       color: black;
-      font-size: 20px;
-      padding: 8px 24px;
+      font-size: 18px;
+      padding: 6px 24px;
       border-radius: 10px;
+      font-family: Helvetica
     }
 
     #buttonasian {
@@ -112,16 +134,15 @@
 <body>
 
 
-    <h2> Wealth Gaps and Distributions in the U.S. </h2>
+    <h1> Wealth Gaps and Distributions in the U.S. </h1>
     <!-- <h4> Click to select groups. </h4> -->
 
     <p> 
-    <!-- <button type = 'button' id = 'Race'> All </button> -->
     <button type = 'button' id = 'buttonasian'> Asian </button>
     <button type = 'button' id = 'buttonblack'> Black </button>
     <button type = 'button' id = 'buttonhispanic'> Hispanic </button>
     <button type = 'button' id = 'buttonwhite'> White </button> 
-    <button type = 'button' id = 'buttonall'> All </button> </p>
+     <!--<button type = 'button' id = 'buttonall'> All </button> </p> -->
 
 <div class = "container">
 	<div id = "linegraph"></div>
@@ -274,39 +295,55 @@
         });
 
 
-  // make lines after click of button (with networth2)
+  //make lines after click of button (with networth2)
   d3.select('#buttonwhite')
-    .on('click', function() { if (selected == false)
-      {selected = true; 
-      plot(dataset, "white_not_h", "wline", ".dot", "dot");} 
-      else {selected = false;
+    .on('click', function() { if (selectedw == false)
+      {selectedw = true; 
+      plot(dataset, "white_not_h", "wline", ".dot", "dot", "wlabel");} 
+      else {selectedw = false;
             svg.selectAll(".dot").remove();
-            svg.selectAll(".wline").remove();}
+            svg.selectAll(".wline").remove();
+            svg.select(".wlabel").remove();}
       }); 
 
   d3.select('#buttonhispanic')
-    .on('click', function() {
-      plot(dataset, "hispanic", "hline", ".dot2", "dot2");
+    .on('click', function() { if (selectedh == false)
+      {selectedh = true;
+      plot(dataset, "hispanic", "hline", ".dot2", "dot2", "hlabel");}
+      else {selectedh = false;
+            svg.selectAll(".dot2").remove();
+            svg.selectAll(".hline").remove();
+            svg.select(".hlabel").remove();}
     });
 
   d3.select('#buttonasian')
-    .on('click', function() {
-      plot(dataset, "asian", "aline", ".dot3", "dot3");
+    .on('click', function() { if (selecteda == false)
+      {selecteda = true;
+      plot(dataset, "asian", "aline", ".dot3", "dot3", "alabel");}
+      else {selecteda = false;
+            svg.selectAll(".dot3").remove();
+            svg.selectAll(".aline").remove();
+            svg.select(".alabel").remove();}
     });
 
   d3.select('#buttonblack')
-    .on('click', function() {
-      console.log("hi")
-      plot(dataset, "black", "bline", ".dot4", "dot4");
+    .on('click', function() { if (selectedb == false)
+      {selectedb = true;
+      plot(dataset, "black", "bline", ".dot4", "dot4", "blabel");}
+      else {selectedb = false;
+            svg.selectAll(".dot4").remove();
+            svg.selectAll(".bline").remove();
+            svg.select(".blabel").remove();}
     });
 
-  d3.select('#buttonall')
-    .on('click', function() {
-      plot(dataset, "white_not_h", "wline", ".dot", "dot");
-      plot(dataset, "hispanic", "hline", ".dot2", "dot2");
-      plot(dataset, "asian", "aline", ".dot3", "dot3");
-      plot(dataset, "black", "bline", ".dot4", "dot4");
-    });
+  //d3.select('#buttonall')
+    //.on('click', function() {
+      // show all lines first instead of on click
+      plot(dataset, "white_not_h", "wline", ".dot", "dot", "wlabel");
+      plot(dataset, "hispanic", "hline", ".dot2", "dot2", "hlabel");
+      plot(dataset, "asian", "aline", ".dot3", "dot3", "alabel");
+      plot(dataset, "black", "bline", ".dot4", "dot4", "blabel");
+    //});
 
   //reset button
   d3.select('#reset')
@@ -323,8 +360,12 @@
     svg3.selectAll("text").remove();
   }
 
-  var selected = false;
-
+  //var selected = false;
+  var selectedw = true; // set lines to selected first, then change when removed
+  var selectedh = true;
+  var selectedb = true;
+  var selecteda = true;
+  
   var count = 0;
 
   var tooltip = d3.select("body")
@@ -332,9 +373,11 @@
     .style("position", "absolute")
     .style("z-index", "10")
     .style("visibility", "hidden")
-    .text("a simple tooltip");
+    .text("a simple tooltip")
+    .attr("font-family", "Heveltica")
+    .attr("font-size", "15px");
 
-  function plot(data, race, lineclass, dot, dotclass) {
+  function plot(data, race, lineclass, dot, dotclass, label) {
     // filter
       data = dataset.filter(function(d){return d.Race_Ethnicity == race;})
       console.log(data)
@@ -383,7 +426,10 @@
       svg.append("text")
         .attr('transform', 'translate(' + (width + margin.left + 10) +
                                ',' + (y(data[0].amount) + margin.top) + ')')
-        .text(race);
+        .text(race)
+        .attr("class", label)
+        .attr("font-family", "Trebuchet MS");
+        //.attr("font-size", "13px");
   };  
 
 
@@ -392,13 +438,17 @@
     .attr('transform', 'translate(' + margin.left + ',' + (height + margin.top) + ')')
     .call(d3.axisBottom(x)) 
     .selectAll("text")
-    .attr("transform", "rotate(-30)");
+    .attr("transform", "rotate(-30)")
+    .attr("font-family", "Trebuchet MS")
+    .attr("font-size", "10px");
 
   // x axis text
   svg.append("text")
-    .attr('transform', 'translate(' + (width + margin.left + margin.right)/2 + ',' + (height + margin.top + 30) + ')')
+    .attr('transform', 'translate(' + (width + margin.left + margin.right)/2 + ',' + (height + margin.top + 35) + ')')
     .style("text-anchor", "middle")
-    .text("Year");
+    .text("Year")
+    .attr("font-family", "Trebuchet MS")
+    .attr("font-size", "16px");
 
   // y axis
   svg.append('g')
@@ -409,18 +459,24 @@
   svg.append("text")
     .attr('transform', 'translate('+ margin.left/3 + ',' + (height + margin.top + margin.bottom)/2 + ')rotate(-90)')
     .style("text-anchor", "middle")
-    .text("Median Net Worth ($)");
+    .text("Median Net Worth ($)")
+    .attr("font-family", "Trebuchet MS")
+    .attr("font-size", "16px");
 
 
   // starting text
   svg2.append("text")
-    .attr('transform', 'translate(' + 55 + ',' + (svg.attr("height")/2)/2 + ')')
+    .attr('transform', 'translate(' + 65 + ',' + (svg.attr("height")/2)/2 + ')')
     .text("Click a point on the graph to view distribution")
-    .attr("fill-opacity", 0.6);
+    .attr("fill-opacity", 0.6)
+    .attr("font-family", "Trebuchet MS")
+    .attr("font-size", "12px");
   svg3.append("text")
-    .attr('transform', 'translate(' + 55 + ',' + (svg.attr("height")/2)/2 + ')')
+    .attr('transform', 'translate(' + 65 + ',' + (svg.attr("height")/2)/2 + ')')
     .text("Click a point on the graph to view distribution")
-    .attr("fill-opacity", 0.6);
+    .attr("fill-opacity", 0.6)
+    .attr("font-family", "Trebuchet MS")
+    .attr("font-size", "12px");
 
 
   };
@@ -489,8 +545,9 @@
       .attr("y", margin.top)
       .attr("x", (width + margin.left + margin.right)/2)
       .style("text-anchor", "middle")
-      .style("font-size", "16px")
-      .text(year + " Distribution of Net Worth ");
+      .text(year + " Distribution of Net Worth ")
+      .attr("font-family", "Trebuchet MS")
+      .attr("font-size", "14px");
 
     // x axis
     svg.append('g')
@@ -499,7 +556,9 @@
       .selectAll("text")
       .attr("x", -20)
       .attr("y", +10)
-      .attr("transform", "rotate(-30)");
+      .attr("transform", "rotate(-30)")
+      .attr("font-family", "Trebuchet MS")
+      .attr("font-size", "10px");
 
     // y axis
     svg.append('g')
@@ -509,8 +568,9 @@
     svg.append("text")
       .attr('transform', 'translate('+ margin.left/2 + ',' + (height + margin.top + margin.bottom)/2 + ')rotate(-90)')
       .style("text-anchor", "middle")
-      .style("font-size", "10px")
-      .text("Percent of Group");
+      .text("Percent of Group")
+      .attr("font-family", "Trebuchet MS")
+      .attr("font-size", "12px");
 
 
 
