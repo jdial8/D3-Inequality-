@@ -58,6 +58,30 @@
       font-weight: bold;
     }
 
+    .dot {
+      fill: white;
+      stroke: #b44724;
+      stroke-width: 4px;
+    }
+
+    .dot2 {
+      fill: white;
+      stroke: #409379;
+      stroke-width: 4px;
+    }
+
+    .dot3 {
+      fill: white;
+      stroke: #000026;
+      stroke-width: 4px;
+    }
+
+    .dot4 {
+      fill: white;
+      stroke: #C35882;
+      stroke-width: 4px;
+    }
+
     .bar {
         stroke: #000000;
         stroke-width: 1;
@@ -187,7 +211,7 @@
   function makelineg(){
   		//console.log(dataset[0].year);  	
 
-  var margin = {top: 30, right: 100, bottom: 40, left: 100};
+  var margin = {top: 30, right: 100, bottom: 60, left: 100};
   var width = 800 - margin.left - margin.right;
   var height = 600 - margin.top - margin.bottom;
 
@@ -358,6 +382,7 @@
     svg3.selectAll("g").remove(); 
     svg2.selectAll("text").remove();
     svg3.selectAll("text").remove();
+    //svg.selectAll("circle").style("fill", "white");
   }
 
   //var selected = false;
@@ -397,10 +422,11 @@
         //.attr("class", lineclass)
         .attr("cx", function(d) {return x(d.year);})
         .attr("cy", function (d) {return y(d.amount)})
-        .attr("r", 6)
+        .attr("r", 5)
         .on('click', function(d) {
           count++;
           console.log(count % 2);
+          //d3.select(this).style("fill", "black");
           //console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
           //console.log(d3.select(this));
           if (count % 2 == 1) {
@@ -412,13 +438,15 @@
             makehist(d.year, d.Race_Ethnicity, svg3);
           }; })
         .on("mouseover", function(d) {
-          d3.select(this).attr('fill-opacity', 0.5);
+          //d3.select(this).attr('fill-opacity', 0.5);
+          d3.select(this).attr('r', 8);
           d3.select(this).style("cursor", "pointer");
           tooltip.text("$" + d.amount); 
           return tooltip.style("visibility", "visible");})
         .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(d){
-          d3.select(this).attr('fill-opacity', 1);
+          //d3.select(this).attr('fill-opacity', 1);
+          d3.select(this).attr('r', 5)
           return tooltip.style("visibility", "hidden");
           });
 
@@ -463,6 +491,13 @@
     .attr("font-family", "Trebuchet MS")
     .attr("font-size", "16px");
 
+  // source text
+  svg.append("text")
+    .attr('transform', 'translate(' + margin.left + ',' + (height + margin.top + margin.bottom - 5) + ')')
+    .text("Data Source: United States Census Bureau Survey of Income and Program Participation (SIPP)")
+    .attr("font-family", "Trebuchet MS")
+    .attr("font-size", "10.5px")
+
 
   // starting text
   svg2.append("text")
@@ -479,12 +514,6 @@
     .attr("font-size", "12px");
 
 
-  };
-
-
-  function practice(y, r) {
-    console.log(y)
-    console.log(r)
   };
 
 
@@ -571,8 +600,6 @@
       .text("Percent of Group")
       .attr("font-family", "Trebuchet MS")
       .attr("font-size", "12px");
-
-
 
     });
 
