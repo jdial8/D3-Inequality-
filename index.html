@@ -31,30 +31,30 @@
 
     .aline {
       fill: none;
-      stroke: #000026;
+      stroke: #000045;
       stroke-width: 4px;
     }
 
     .bline {
       fill: none;
-      stroke: #C35882;
+      stroke: #A85AC3;
       stroke-width: 4px;
     }
 
     .wlabel {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: bold;
     }
     .hlabel {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: bold;
     }
     .alabel {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: bold;
     }
     .blabel {
-      font-size: 13px;
+      font-size: 14px;
       font-weight: bold;
     }
 
@@ -72,13 +72,13 @@
 
     .dot3 {
       fill: white;
-      stroke: #000026;
+      stroke: #000045;
       stroke-width: 4px;
     }
 
     .dot4 {
       fill: white;
-      stroke: #C35882;
+      stroke: #A85AC3;
       stroke-width: 4px;
     }
 
@@ -119,20 +119,20 @@
     }
 
     #buttonasian {
-      border: 2px solid #000026;
+      border: 2px solid #000045;
     }
 
     #buttonasian:hover {
-      background-color: #000026; /* maybe do box-shadow instead */
+      background-color: #000045; /* maybe do box-shadow instead */
       color: white;
     }
 
     #buttonblack {
-      border: 2px solid #C35882;
+      border: 2px solid #A85AC3;
     }
 
     #buttonblack:hover {
-      background-color: #C35882; /* maybe do box-shadow instead */
+      background-color: #A85AC3; /* maybe do box-shadow instead */
       color: white;
     }
 
@@ -562,7 +562,7 @@
     var g = svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
 
-    g.selectAll(".bar")
+    chart = g.selectAll(".bar")
       .data(dataset)
       .enter()
       .append("rect")
@@ -574,8 +574,8 @@
       .attr("fill", function(r) {
         if (race == "white_not_h") {return "#b44724"}
         else if (race == "hispanic") {return "#409379"}
-        else if (race == "asian") {return "#000026"}
-        else {return "#C35882"}
+        else if (race == "asian") {return "#000045"}
+        else {return "#A85AC3"}
       });
   
     // graph title
@@ -609,6 +609,7 @@
       .text("Percent of Group")
       .attr("font-family", "Trebuchet MS")
       .attr("font-size", "12px");
+
 
     });
 
