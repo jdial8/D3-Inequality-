@@ -88,6 +88,16 @@
         opacity: .7;
       }
 
+    .idk {
+      background-color: rgba(88,88,88,0.7);
+      color: white;
+      padding: 20px 20px;
+      font-family: Helvetica;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 2px solid black;
+    }
+
     #linegraph {
       float: left;
       width: 800;
@@ -395,12 +405,11 @@
 
   var tooltip = d3.select("body")
     .append("div")
+    .attr("class", "idk")
     .style("position", "absolute")
     .style("z-index", "10")
     .style("visibility", "hidden")
-    .text("a simple tooltip")
-    .attr("font-family", "Heveltica")
-    .attr("font-size", "15px");
+    .text("a simple tooltip");
 
   function plot(data, race, lineclass, dot, dotclass, label) {
     // filter
@@ -441,7 +450,7 @@
           //d3.select(this).attr('fill-opacity', 0.5);
           d3.select(this).attr('r', 8);
           d3.select(this).style("cursor", "pointer");
-          tooltip.text("$" + d.amount); 
+          tooltip.text(d.year.getFullYear() + ": $" + d.amount); 
           return tooltip.style("visibility", "visible");})
         .on("mousemove", function(){return tooltip.style("top", (event.pageY-10)+"px").style("left",(event.pageX+10)+"px");})
         .on("mouseout", function(d){
