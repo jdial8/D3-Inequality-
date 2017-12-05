@@ -528,7 +528,7 @@
 
   function makehist(y, r, svg) {
 
-  d3.json("./WealthDist.json", function(error, data){
+  d3.json("./WealthDist3.json", function(error, data){
     
     var dataset = data.filter(function (d) { 
       return d.year == y.getFullYear() & d.Race_Ethnicity == r ;});
