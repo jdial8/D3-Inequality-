@@ -374,22 +374,30 @@
       plot(dataset, "black", "bline", ".dot4", "dot4", "blabel");
     //});
 
-  line1 = d3.selectAll(".dot3")._groups[0][0]
-  line2 = d3.selectAll(".dot4")._groups[0][0]
+ 
+  var classes = [];
+  d3.selectAll("circle")._groups[0].forEach(function (circle) {
+    //console.log(classes.indexOf(circle)); it is always -1
+    classes.push(circle.getAttribute("class"));})
+  
+  var list = classes.filter(function (x, i, a) {
+    return a.indexOf(x) == i;
+  });
+  console.log(list)
 
-  //for (var i=0, i < line1.length; i++) {
-    //console.log(i);
-  //}
-//.cx["baseVal"]["value"]
+  
 
+  for (var i = 0; i < 7; i++) {
+      line1 = d3.selectAll(".dot3")._groups[0][i]
+      line2 = d3.selectAll(".dot4")._groups[0][i]
 
-  g.append("line")
-    .attr("x1", line1.getAttribute('cx'))
-    .attr("y1", line1.getAttribute('cy'))
-    .attr("x2", line2.getAttribute('cx'))
-    .attr("y2", line2.getAttribute('cy'))
-    .attr("stroke", "black");
-
+      g.append("line")
+        .attr("x1", line1.getAttribute('cx'))
+        .attr("y1", line1.getAttribute('cy'))
+        .attr("x2", line2.getAttribute('cx'))
+        .attr("y2", line2.getAttribute('cy'))
+        .attr("stroke", "grey");
+  }
 
   //reset button
   d3.select('#reset')
