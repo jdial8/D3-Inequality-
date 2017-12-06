@@ -205,9 +205,7 @@
       d.black = +d.black
       d.asian = +d.asian
       d.hispanic = +d.hispanic
-      d.year =
       d.year = parseTime(d.year);
-      //console.log(d)
     });
 
   	if (error) {
@@ -219,7 +217,6 @@
   	});
 
   function makelineg(){
-  		//console.log(dataset[0].year);  	
 
   var margin = {top: 30, right: 100, bottom: 60, left: 100};
   var width = 800 - margin.left - margin.right;
@@ -259,8 +256,6 @@
     .append('svg')
     .attr("width", width + margin.right + margin.left)
     .attr("height", height + margin.top + margin.bottom);
-
-  console.log(svg.attr("width"))
 
 
   var g = svg.append('g')
@@ -379,6 +374,23 @@
       plot(dataset, "black", "bline", ".dot4", "dot4", "blabel");
     //});
 
+  line1 = d3.selectAll(".dot3")._groups[0][0]
+  line2 = d3.selectAll(".dot4")._groups[0][0]
+
+  //for (var i=0, i < line1.length; i++) {
+    //console.log(i);
+  //}
+//.cx["baseVal"]["value"]
+
+
+  g.append("line")
+    .attr("x1", line1.getAttribute('cx'))
+    .attr("y1", line1.getAttribute('cy'))
+    .attr("x2", line2.getAttribute('cx'))
+    .attr("y2", line2.getAttribute('cy'))
+    .attr("stroke", "black");
+
+
   //reset button
   d3.select('#reset')
     .on('click', function() {//svg2.selectAll(".bar").remove();
@@ -414,7 +426,7 @@
   function plot(data, race, lineclass, dot, dotclass, label) {
     // filter
       data = dataset.filter(function(d){return d.Race_Ethnicity == race;})
-      console.log(data)
+      //console.log(data)
 
     //lines
       g.append("path")
@@ -434,7 +446,7 @@
         .attr("r", 5)
         .on('click', function(d) {
           count++;
-          console.log(count % 2);
+          //console.log(count % 2);
           //d3.select(this).style("fill", "black");
           //console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
           //console.log(d3.select(this));
@@ -537,12 +549,9 @@
       d.Race_Ethnicity = d.Race_Ethnicity
       d.bucket = d.bucket
       d.percent = +d.percent 
-      d.year = parseTime(d.year) 
-      console.log(d.year);  
+      d.year = parseTime(d.year);  
       })
       
-    console.log(dataset)
-
     var race = r
     var year = y.getFullYear()
 
