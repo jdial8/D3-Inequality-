@@ -540,45 +540,55 @@
 
 function makeLines() {
 
-if ( totalselect == 2) { 
+  if ( totalselect != 2) {
+    d3.selectAll(".diffLines").remove();
+    d3.selectAll(".diffText").remove();
+  };
+
+  if ( totalselect == 2) { 
 
  // get classes of dots
-  var classes = [];
-  d3.selectAll("circle")._groups[0].forEach(function (circle) {
-    //console.log(classes.indexOf(circle)); it is always -1
-    classes.push(circle.getAttribute("class"));})
-  
-  // then get unique values
-  var list = classes.filter(function (x, i, a) {
-    return a.indexOf(x) == i;
-  });
+    var classes = [];
+    d3.selectAll("circle")._groups[0].forEach(function (circle) {
+      //console.log(classes.indexOf(circle)); it is always -1
+      classes.push(circle.getAttribute("class"));})
+    
+    // then get unique values
+    var list = classes.filter(function (x, i, a) {
+      return a.indexOf(x) == i;
+    });
 
-  line1 = d3.selectAll("." + list[0])._groups[0]
-  line2 = d3.selectAll("." + list[1])._groups[0]
+    line1 = d3.selectAll("." + list[0])._groups[0]
+    line2 = d3.selectAll("." + list[1])._groups[0]
 
-  for (var i = 0; i < 7; i++) {
-      //line1 = d3.selectAll(".dot3")._groups[0][i]
-      //line2 = d3.selectAll(".dot4")._groups[0][i]
-      point1 = line1[i]
-      point2 = line2[i]
+    for (var i = 0; i < 7; i++) {
+        //line1 = d3.selectAll(".dot3")._groups[0][i]
+        //line2 = d3.selectAll(".dot4")._groups[0][i]
+        point1 = line1[i]
+        point2 = line2[i]
 
-      g.append("line")
-        .attr("x1", point1.getAttribute('cx'))
-        .attr("y1", point1.getAttribute('cy'))
-        .attr("x2", point2.getAttribute('cx'))
-        .attr("y2", point2.getAttribute('cy'))
-        .attr("stroke", "grey")
-        .transition()
-        .duration(5000)
-        
+        g.append("line")
+          .attr("class", "diffLines")
+          .attr("x1", point1.getAttribute('cx'))
+          .attr("y1", point1.getAttribute('cy'))
+          .attr("x2", point2.getAttribute('cx'))
+          .attr("y2", point2.getAttribute('cy'))
+          .attr("stroke", "grey")
+          .transition()
+          .duration(5000)
+          
 
-      // label
-      g.append("text")
-        .attr('transform', 'translate(' + point1.getAttribute('cx') +
-                               ',' + (point2.getAttribute('cy'))/2 + ')')
-        .text((Math.round(point1.__data__.amount/point2.__data__.amount).toString() + "X"))
-        .attr("font-size", 10)
-        .attr("font-family", "Trebuchet MS");
+        x1 = parseInt(point1.getAttribute('cx'))
+        y1 = parseInt(point1.getAttribute('cy'))
+        y2 = parseInt(point2.getAttribute('cy'))
+
+        // label
+        g.append("text")
+          .attr("class", "diffText")
+          .attr('transform', 'translate(' + (x1 + 5) + ',' + (y1 + y2)/2 + ')')
+          .text((Math.round(point1.__data__.amount/point2.__data__.amount).toString() + "X"))
+          .attr("font-size", 10)
+          .attr("font-family", "Trebuchet MS");
 
     }
   }
