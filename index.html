@@ -197,54 +197,26 @@
 
   var parseTime = d3.timeParse("%Y");
 
+  var totalselect = (selectedw + selectedb + selecteda + selectedh);
 
-  d3.json("./networth2.json", function(error, data){
-    dataset= data;
-
-    dataset.forEach(function(d) {
-      d.white_not_h = d.white_not_h
-      d.black = +d.black
-      d.asian = +d.asian
-      d.hispanic = +d.hispanic
-      d.year = parseTime(d.year);
-    });
-
-  	if (error) {
-  		console.log(error);
-  	}
-  	else {
-  	makelineg();
-    }
-  	});
-
-  function makelineg(){
+  //var selected = false;
+  var selectedw = true; // set lines to selected first, then change when removed
+  var selectedh = true;
+  var selectedb = true;
+  var selecteda = true;
 
   var margin = {top: 30, right: 100, bottom: 60, left: 100};
   var width = 800 - margin.left - margin.right;
   var height = 600 - margin.top - margin.bottom;
 
-
-  //var xScale = d3.scaleTime()
-     //.domain([d3.extent(dataset, function(d) {return d.year})]) 
-     //.rangeRound([0, width])
-
-  //var yScale = d3.scaleLinear()
-     //.domain([0, d3.max(dataset, function(d) {
-        //return Math.max(d.white_not_h, d.black, d.asian, d.hispanic); })]) 
-     //.range([height, 0]); //lower values appear lower on the screen
-
   var x = d3.scaleTime().range([0, width]);
   var y = d3.scaleLinear().range([height, 0])
 
   // 1st line
-  var valueline = d3.line()
-    .x(function(d) { return x(d.year); })
-    .y(function(d) { return y(d.white_not_h); });
+  //var valueline = d3.line()
+    //.x(function(d) { return x(d.year); })
+    //.y(function(d) { return y(d.white_not_h); });
 
-  // 2nd line
-  var valueline2 = d3.line()
-    .x(function(d) { return x(d.year); })
-    .y(function(d) { return y(d.hispanic); });
 
   //networth2 version
   var ValueLine = d3.line()
@@ -296,12 +268,47 @@
             .style("stroke-width", 2);
 
 
+  function recalculate() {
+    return totalselect = (selectedw + selectedb + selecteda + selectedh)
+  }
+
+  d3.json("./networth2.json", function(error, data){
+    dataset= data;
+
+    dataset.forEach(function(d) {
+      d.white_not_h = d.white_not_h
+      d.black = +d.black
+      d.asian = +d.asian
+      d.hispanic = +d.hispanic
+      d.year = parseTime(d.year);
+    });
+
+  	if (error) {
+  		console.log(error);
+  	}
+  	else {
+  	makelineg();
+    }
+  	});
+
+  function makelineg(){
+
+
+  //var xScale = d3.scaleTime()
+     //.domain([d3.extent(dataset, function(d) {return d.year})]) 
+     //.rangeRound([0, width])
+
+  //var yScale = d3.scaleLinear()
+     //.domain([0, d3.max(dataset, function(d) {
+        //return Math.max(d.white_not_h, d.black, d.asian, d.hispanic); })]) 
+     //.range([height, 0]); //lower values appear lower on the screen
+  
+
   x.domain(d3.extent(dataset, function(d) {return d.year}))
   //y.domain([0, d3.max(dataset, function (d) {
     //return Math.max(d.white_not_h, d.black, d.asian, d.hispanic);}
     //)])
   y.domain([0, d3.max(dataset, function(d) {return d.amount;})])
-  
 
   // bring the data in on click of buttons (networth)
   d3.select('#buttonwhite')
@@ -310,8 +317,7 @@
       g.append("path")
         .data([dataset])
         .attr("class", "wline")
-        .attr("d", valueline)
-;
+        .attr("d", valueline);
       // points
       g.selectAll(".dot")
         .data(dataset)
@@ -334,19 +340,22 @@
             svg.selectAll(".dot").remove();
             svg.selectAll(".wline").remove();
             svg.select(".wlabel").remove();}
+
+      recalculate();
+      makeLines()
       }); 
 
   d3.select('#buttonhispanic')
     .on('click', function() { if (selectedh == false)
       {selectedh = true;
-        recalculate();
-        console.log(totalselect);
       plot(dataset, "hispanic", "hline", ".dot2", "dot2", "hlabel");}
       else {selectedh = false;
-            recalculate();
             svg.selectAll(".dot2").remove();
             svg.selectAll(".hline").remove();
             svg.select(".hlabel").remove();}
+
+      recalculate();
+      makeLines()
     });
 
   d3.select('#buttonasian')
@@ -357,6 +366,9 @@
             svg.selectAll(".dot3").remove();
             svg.selectAll(".aline").remove();
             svg.select(".alabel").remove();}
+
+      recalculate();
+      makeLines()
     });
 
   d3.select('#buttonblack')
@@ -367,6 +379,9 @@
             svg.selectAll(".dot4").remove();
             svg.selectAll(".bline").remove();
             svg.select(".blabel").remove();}
+
+      recalculate();
+      makeLines()
     });
 
   //d3.select('#buttonall')
@@ -394,16 +409,6 @@
     svg3.selectAll("text").remove();
     //svg.selectAll("circle").style("fill", "white");
   }
-
-  function recalculate() {
-    return totalselect = (selectedw + selectedb + selecteda + selectedh)
-  }
-
-  //var selected = false;
-  var selectedw = true; // set lines to selected first, then change when removed
-  var selectedh = true;
-  var selectedb = true;
-  var selecteda = true;
 
   
   var count = 0;
@@ -528,10 +533,14 @@
     .attr("font-size", "12px");
 
 
-var totalselect = (selectedw + selectedb + selecteda + selectedh);
+
+  };
 
 
-if ( totalselect == 4) { 
+
+function makeLines() {
+
+if ( totalselect == 2) { 
 
  // get classes of dots
   var classes = [];
@@ -546,7 +555,6 @@ if ( totalselect == 4) {
 
   line1 = d3.selectAll("." + list[0])._groups[0]
   line2 = d3.selectAll("." + list[1])._groups[0]
-  console.log(line1[0])
 
   for (var i = 0; i < 7; i++) {
       //line1 = d3.selectAll(".dot3")._groups[0][i]
@@ -560,6 +568,9 @@ if ( totalselect == 4) {
         .attr("x2", point2.getAttribute('cx'))
         .attr("y2", point2.getAttribute('cy'))
         .attr("stroke", "grey")
+        .transition()
+        .duration(5000)
+        
 
       // label
       g.append("text")
@@ -571,8 +582,7 @@ if ( totalselect == 4) {
 
     }
   }
-
-  };
+};
 
 
   function makehist(y, r, svg) {
