@@ -1,0 +1,159 @@
+    html,
+    h1 {
+      font-family: Futura;
+
+    }
+
+    .grid line {
+      stroke: gray;
+      stroke-opacity: 0.4;
+    }
+
+    .grid path {
+      stroke-width: 0px;
+    }
+
+    .wline {
+      fill: none;
+      stroke: #b44724;
+      stroke-width: 4px;
+    }
+
+    .hline {
+      fill: none;
+      stroke: #409379;
+      stroke-width: 4px;
+    }
+
+    .aline {
+      fill: none;
+      stroke: #000045;
+      stroke-width: 4px;
+    }
+
+    .bline {
+      fill: none;
+      stroke: #A85AC3;
+      stroke-width: 4px;
+    }
+
+    .wlabel {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .hlabel {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .alabel {
+      font-size: 14px;
+      font-weight: bold;
+    }
+    .blabel {
+      font-size: 14px;
+      font-weight: bold;
+    }
+
+    .dot {
+      fill: white;
+      stroke: #b44724;
+      stroke-width: 4px;
+    }
+
+    .dot2 {
+      fill: white;
+      stroke: #409379;
+      stroke-width: 4px;
+    }
+
+    .dot3 {
+      fill: white;
+      stroke: #000045;
+      stroke-width: 4px;
+    }
+
+    .dot4 {
+      fill: white;
+      stroke: #A85AC3;
+      stroke-width: 4px;
+    }
+
+    .bar {
+        stroke: #000000;
+        stroke-width: 1;
+        opacity: .7;
+      }
+
+    .idk {
+      background-color: rgba(88,88,88,0.7);
+      color: white;
+      padding: 20px 20px;
+      font-family: Helvetica;
+      font-size: 16px;
+      border-radius: 4px;
+      border: 2px solid black;
+    }
+
+    #linegraph {
+      float: left;
+      width: 800;
+      
+    }
+
+    #histogram {
+      float: left;
+      width: 400;
+    }
+
+    button {
+      background-color: white;
+      color: black;
+      font-size: 18px;
+      padding: 6px 24px;
+      border-radius: 10px;
+      font-family: Helvetica
+    }
+
+    #buttonasian {
+      border: 2px solid #000045;
+    }
+
+    #buttonasian:hover {
+      background-color: #000045; 
+      color: white;
+    }
+
+    #buttonblack {
+      border: 2px solid #A85AC3;
+    }
+
+    #buttonblack:hover {
+      background-color: #A85AC3; 
+      color: white;
+    }
+
+    #buttonhispanic {
+      border: 2px solid #409379;
+    }
+
+    #buttonhispanic:hover {
+      background-color: #409379; 
+      color: white;
+    }
+
+    #buttonwhite {
+      border: 2px solid #b44724;
+    }
+
+    #buttonwhite:hover {
+      background-color: #b44724; 
+      color: white;
+    }
+
+    #buttonall {
+      border: 2px solid #000000;
+    }
+
+    .reset {  
+      float: right;
+      }
