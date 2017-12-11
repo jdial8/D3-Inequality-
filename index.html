@@ -505,6 +505,9 @@
     .text("Data Source: United States Census Bureau Survey of Income and Program Participation (SIPP)")
     .attr("font-family", "Trebuchet MS")
     .attr("font-size", "10.5px")
+    .on("click", function() { window.open("https://www.census.gov/topics/income-poverty/wealth/data/tables.html"); })
+    .on("mouseover", function() {
+          d3.select(this).style("cursor", "pointer") });
 
 
   // starting text
