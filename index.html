@@ -17,6 +17,15 @@
 
     }
 
+    .grid line {
+      stroke: gray;
+      stroke-opacity: 0.4;
+    }
+
+    .grid path {
+      stroke-width: 0px;
+    }
+
     .wline {
       fill: none;
       stroke: #b44724;
@@ -271,6 +280,7 @@
   function recalculate() {
     return totalselect = (selectedw + selectedb + selecteda + selectedh)
   }
+
 
   d3.json("./networth2.json", function(error, data){
     dataset= data;
@@ -558,6 +568,8 @@ function makeLines() {
       return a.indexOf(x) == i;
     });
 
+    console.log(list)
+
     line1 = d3.selectAll("." + list[0])._groups[0]
     line2 = d3.selectAll("." + list[1])._groups[0]
 
@@ -581,13 +593,15 @@ function makeLines() {
         x1 = parseInt(point1.getAttribute('cx'))
         y1 = parseInt(point1.getAttribute('cy'))
         y2 = parseInt(point2.getAttribute('cy'))
+        max = Math.max(point1.__data__.amount, point2.__data__.amount)
+        min = Math.min(point1.__data__.amount, point2.__data__.amount)
 
         // label
         g.append("text")
           .attr("class", "diffText")
           .attr('transform', 'translate(' + (x1 + 5) + ',' + (y1 + y2)/2 + ')')
-          .text((Math.round(point1.__data__.amount/point2.__data__.amount).toString() + "X"))
-          .attr("font-size", 10)
+          .text((Math.round(max/min).toString() + "X"))
+          .attr("font-size", 12)
           .attr("font-family", "Trebuchet MS");
 
     }
@@ -625,8 +639,21 @@ function makeLines() {
      .domain([0, 40]) // same range for all histograms plotted
      .range([height, 0]); 
 
+    function gridlines() {
+    return d3.axisLeft(yScale)
+      .ticks(4)
+    }
+
+    svg.append('g')
+      .attr("class", "grid")
+      .attr('transform', 'translate(' + margin.left + ',' + margin.right + ')')
+      .call(gridlines() 
+          .tickSize(-width)
+          .tickFormat("") )
+
     var g = svg.append('g')
       .attr('transform', 'translate(' + margin.left + ',' + margin.top + ')');
+
 
     chart = g.selectAll(".bar")
       .data(dataset)
@@ -646,7 +673,7 @@ function makeLines() {
   
     // graph title
     svg.append("text")
-      .attr("y", margin.top)
+      .attr("y", margin.top - 15)
       .attr("x", (width + margin.left + margin.right)/2)
       .style("text-anchor", "middle")
       .text(year + " Distribution of Net Worth ")
