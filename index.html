@@ -10,8 +10,6 @@
   <link rel="stylesheet" href="style.css">
 
   <style>
-
-
   </style>
 
 </head>
@@ -236,9 +234,9 @@
         .attr("cx", function(d) {return x(d.year);})
         .attr("cy", function (d) {return y(d.amount)})
         .attr("r", 5)
-        .on('click', function(d) {
+        .on('click', function(d) { //once two histograms are showing, reset svgs and circles
           count++;
-          if (count % 2 == 1) {
+          if (count % 2 == 1) {    
             reset()
             svg.selectAll("circle").style("fill", "white");
             makehist(d.year, d.Race_Ethnicity, svg2);
@@ -340,7 +338,6 @@
     // get classes of dots
       var classes = [];
       d3.selectAll("circle")._groups[0].forEach(function (circle) {
-        //console.log(classes.indexOf(circle)); it is always -1
         classes.push(circle.getAttribute("class"));})
       
       // then get unique values
@@ -370,6 +367,7 @@
             .attr("x2", point2.getAttribute('cx'))
             .attr("y2", (y1 + y2)/2)
             .attr("stroke", "grey")
+            .attr("stroke-opacity", 0.6)
             .transition()
             .duration(1500)
             .attr("y1", point1.getAttribute('cy'))
