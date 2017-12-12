@@ -19,14 +19,12 @@
 
 
     <h1> Wealth Gaps and Distributions in the U.S. </h1>
-    <!-- <h4> Click to select groups. </h4> -->
 
     <p> 
     <button type = 'button' id = 'buttonasian'> Asian </button>
     <button type = 'button' id = 'buttonblack'> Black </button>
     <button type = 'button' id = 'buttonhispanic'> Hispanic </button>
     <button type = 'button' id = 'buttonwhite'> White </button> 
-     <!--<button type = 'button' id = 'buttonall'> All </button> </p> -->
 
 <div class = "container">
 	<div id = "linegraph"></div>
@@ -37,11 +35,6 @@
   <div id = "histogram2"</div>
 </div>
 
-<!--  <div class = "reset">
-<p>
-      <button type = 'button' id = 'reset'> Reset </button>
-</p>
-</div> -->
 
 <script>
 
@@ -49,7 +42,6 @@
 
   var totalselect = (selectedw + selectedb + selecteda + selectedh);
 
-  //var selected = false;
   var selectedw = true; // set lines to selected first, then change when removed
   var selectedh = true;
   var selectedb = true;
@@ -206,12 +198,6 @@
     plot(dataset, "asian", "aline", ".dot3", "dot3", "alabel");
     plot(dataset, "black", "bline", ".dot4", "dot4", "blabel");
 
-    //reset button
-    d3.select('#reset')
-      .on('click', function() {svg2.selectAll("g").remove();
-                              svg3.selectAll("g").remove(); 
-                              svg2.selectAll("text").remove();
-                              svg3.selectAll("text").remove();})
 
     function reset() {
       svg2.selectAll("g").remove();
@@ -255,8 +241,6 @@
         .on('click', function(d) {
           count++;
             //d3.select(this).style("fill", "black");
-            //console.log(getComputedStyle(document.querySelector(dot)).getPropertyValue('stroke'));
-            //console.log(d3.select(this));
           if (count % 2 == 1) {
             reset()
             makehist(d.year, d.Race_Ethnicity, svg2);
@@ -343,67 +327,67 @@
 
 
 
-function makeLines() {
+  function makeLines() {
 
-  if ( totalselect != 2) {
-    d3.selectAll(".diffLines").remove();
-    d3.selectAll(".diffText").remove();
-  };
+    if ( totalselect != 2) {
+      d3.selectAll(".diffLines").remove();
+      d3.selectAll(".diffText").remove();
+    };
 
-  if ( totalselect == 2) { 
+    if ( totalselect == 2) { 
 
-  // get classes of dots
-    var classes = [];
-    d3.selectAll("circle")._groups[0].forEach(function (circle) {
-      //console.log(classes.indexOf(circle)); it is always -1
-      classes.push(circle.getAttribute("class"));})
-    
-    // then get unique values
-    // adapted from https://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array
-    var list = classes.filter(function (x, i, a) {
-      return a.indexOf(x) == i;
-    });
+    // get classes of dots
+      var classes = [];
+      d3.selectAll("circle")._groups[0].forEach(function (circle) {
+        //console.log(classes.indexOf(circle)); it is always -1
+        classes.push(circle.getAttribute("class"));})
+      
+      // then get unique values
+      // adapted from https://stackoverflow.com/questions/11246758/how-to-get-unique-values-in-an-array
+      var list = classes.filter(function (x, i, a) {
+        return a.indexOf(x) == i;
+      });
 
-    line1 = d3.selectAll("." + list[0])._groups[0]
-    line2 = d3.selectAll("." + list[1])._groups[0]
+      line1 = d3.selectAll("." + list[0])._groups[0]
+      line2 = d3.selectAll("." + list[1])._groups[0]
 
-    for (var i = 0; i < 7; i++) {
+      //draw the lines for each year
+      for (var i = 0; i < 7; i++) {
 
-        point1 = line1[i]
-        point2 = line2[i]
-        x1 = parseInt(point1.getAttribute('cx'))
-        y1 = parseInt(point1.getAttribute('cy'))
-        y2 = parseInt(point2.getAttribute('cy'))
-        max = Math.max(point1.__data__.amount, point2.__data__.amount)
-        min = Math.min(point1.__data__.amount, point2.__data__.amount)
+          point1 = line1[i]
+          point2 = line2[i]
+          x1 = parseInt(point1.getAttribute('cx'))
+          y1 = parseInt(point1.getAttribute('cy'))
+          y2 = parseInt(point2.getAttribute('cy'))
+          max = Math.max(point1.__data__.amount, point2.__data__.amount)
+          min = Math.min(point1.__data__.amount, point2.__data__.amount)
 
-        g.append("line")
-          .attr("class", "diffLines")
-          .attr("x1", point1.getAttribute('cx'))
-          .attr("y1", (y1 + y2)/2)
-          .attr("x2", point2.getAttribute('cx'))
-          .attr("y2", (y1 + y2)/2)
-          .attr("stroke", "grey")
-          .transition()
-          .duration(1500)
-          .attr("y1", point1.getAttribute('cy'))
-          .attr("y2", point2.getAttribute('cy'))
+          g.append("line")
+            .attr("class", "diffLines")
+            .attr("x1", point1.getAttribute('cx'))
+            .attr("y1", (y1 + y2)/2)
+            .attr("x2", point2.getAttribute('cx'))
+            .attr("y2", (y1 + y2)/2)
+            .attr("stroke", "grey")
+            .transition()
+            .duration(1500)
+            .attr("y1", point1.getAttribute('cy'))
+            .attr("y2", point2.getAttribute('cy'))
 
-        // label
-        g.append("text")
-          .attr("class", "diffText")
-          .attr('transform', 'translate(' + (x1 + 5) + ',' + (y1 + y2)/2 + ')')
-          //.text((Math.round(max/min).toString() + "X"))
-          .text(function () { if (Math.round(max/min) > 2) 
-            {return Math.round(max/min).toString() + "X"}
-            else {return (max/min).toFixed(1)}
-          })
-          .attr("font-size", 13)
-          .attr("font-family", "Trebuchet MS");
+          // label
+          g.append("text")
+            .attr("class", "diffText")
+            .attr('transform', 'translate(' + (x1 + 5) + ',' + (y1 + y2)/2 + ')')
+            .text(function () { if (Math.round(max/min) > 2) 
+              {return Math.round(max/min).toString() + "X"}
+              else {return (max/min).toFixed(1)}
+            })
+            .attr("font-size", 13)
+            .attr("font-family", "Trebuchet MS");
 
+      }
     }
-  }
-};
+  };
 
 
   function makehist(y, r, svg) {
